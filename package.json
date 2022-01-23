@@ -1,0 +1,23 @@
+{
+  "name": "discord-bot-wow-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syqu22/discord-bot-wow-helper-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syqu22/discord-bot-wow-helper-js/issues"
+  },
+  "homepage": "https://github.com/syqu22/discord-bot-wow-helper-js#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  }
+}
