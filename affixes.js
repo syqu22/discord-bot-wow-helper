@@ -34,6 +34,10 @@ export const previousAffixes = () => {
     return { error: "No affixes" };
   } else if (week > 12) {
     week %= 12;
+
+    if (week === 0) {
+      week = 12;
+    }
   }
   return { week: previousWeek, affixes: data.affixes[week - 1] };
 };
@@ -45,6 +49,11 @@ export const affixesFromWeek = (week) => {
     return { error: "No affixes" };
   } else if (week > 12) {
     week %= 12;
+
+    if (week === 0) {
+      week = 12;
+    }
   }
+
   return { week: givenWeek, affixes: data.affixes[week - 1] };
 };

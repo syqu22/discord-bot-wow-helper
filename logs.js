@@ -76,6 +76,7 @@ const fightDetail = (fights) => {
 
   // Do the destructuring for each fight
   fights.forEach(({ id, boss, name, difficulty, bossPercentage, kill }) => {
+    // Skip trash
     if (boss) {
       parsedFights.push({
         id: id,
