@@ -1,15 +1,17 @@
 {
   "first_week": "9:00 7-07-2021",
-  "1": ["Tyrannical", "Raging", "Volcanic", "Tormented"],
-  "2": ["Fortified", "Inspiring", "Grievous", "Tormented"],
-  "3": ["Tyrannical", "Spiteful", "Necrotic", "Tormented"],
-  "4": ["Fortified", "Bolstering", "Quaking", "Tormented"],
-  "5": ["Tyrannical", "Sanguine", "Storming", "Tormented"],
-  "6": ["Fortified", "Raging", "Explosive", "Tormented"],
-  "7": ["Tyrannical", "Bursting", "Volcanic", "Tormented"],
-  "8": ["Fortified", "Spiteful", "Grievous", "Tormented"],
-  "9": ["Tyrannical", "Inspiring", "Quaking", "Tormented"],
-  "10": ["Fortified", "Sanguine", "Necrotic", "Tormented"],
-  "11": ["Tyrannical", "Bolstering", "Explosive", "Tormented"],
-  "12": ["Fortified", "Bursting", "Storming", "Tormented"]
+  "affixes": [
+    ["Tyrannical", "Raging", "Volcanic", "Tormented"],
+    ["Fortified", "Inspiring", "Grievous", "Tormented"],
+    ["Tyrannical", "Spiteful", "Necrotic", "Tormented"],
+    ["Fortified", "Bolstering", "Quaking", "Tormented"],
+    ["Tyrannical", "Sanguine", "Storming", "Tormented"],
+    ["Fortified", "Raging", "Explosive", "Tormented"],
+    ["Tyrannical", "Bursting", "Volcanic", "Tormented"],
+    ["Fortified", "Spiteful", "Grievous", "Tormented"],
+    ["Tyrannical", "Inspiring", "Quaking", "Tormented"],
+    ["Fortified", "Sanguine", "Necrotic", "Tormented"],
+    ["Tyrannical", "Bolstering", "Explosive", "Tormented"],
+    ["Fortified", "Bursting", "Storming", "Tormented"]
+  ]
 }

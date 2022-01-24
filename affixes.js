@@ -1,33 +1,35 @@
-const affixes = require("./affixes.json");
+const data = require("./affixes.json");
 
-// affixes["first_week"] = date of the first week
-// affixes[1] = first week affixes
-// affixes[12] = last week affixes
-
-export const weeksSinceFirstWeek = () => {
-  const timeDifference = new Date() - new Date(affixes["first_week"]);
+const weeksSinceFirstWeek = () => {
+  const timeDifference = new Date() - new Date(data["first_week"]);
 
   return Math.floor(timeDifference / (1000 * 3600 * 24 * 7) + 1);
 };
 
-export const currentAffixes = () => {
+const currentAffixes = () => {
   let week = weeksSinceFirstWeek();
+  const currentWeek = week;
+
   while (week > 12) {
     week -= 12;
   }
-  return { week: week, affixes: affixes[week] };
+  return { week: currentWeek, affixes: data.affixes[week - 1] };
 };
 
-export const nextAffixes = () => {
+const nextAffixes = () => {
   let week = weeksSinceFirstWeek() + 1;
+  const nextWeek = week;
+
   while (week > 12) {
     week -= 12;
   }
-  return { week: week, affixes: affixes[week] };
+  return { week: nextWeek, affixes: data.affixes[week - 1] };
 };
 
-export const previousAffixes = () => {
+const previousAffixes = () => {
   let week = weeksSinceFirstWeek() - 1;
+  const previousWeek = week;
+
   if (week < 1) {
     return { error: "No affixes" };
   }
@@ -35,10 +37,12 @@ export const previousAffixes = () => {
   while (week > 12) {
     week -= 12;
   }
-  return { week: week, affixes: affixes[week] };
+  return { week: previousWeek, affixes: data.affixes[week - 1] };
 };
 
-export const affixesFromWeek = (week) => {
+const affixesFromWeek = (week) => {
+  const givenWeek = week;
+
   if (week < 1) {
     return { error: "No affixes" };
   }
@@ -46,5 +50,10 @@ export const affixesFromWeek = (week) => {
   while (week > 12) {
     week -= 12;
   }
-  return { week: week, affixes: affixes[week] };
+  return { week: givenWeek, affixes: data.affixes[week - 1] };
 };
+
+exports.currentAffixes = currentAffixes;
+exports.nextAffixes = nextAffixes;
+exports.previousAffixes = previousAffixes;
+exports.affixesFromWeek = affixesFromWeek;
