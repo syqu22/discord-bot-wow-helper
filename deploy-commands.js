@@ -1,7 +1,7 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { token } = require("./config.json");
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import config from "./config.json";
 
 // For testing
 const clientId = "934929013238034442";
@@ -30,7 +30,7 @@ const commands = [
     ),
 ].map((command) => command.toJSON());
 
-const rest = new REST({ version: "9" }).setToken(token);
+const rest = new REST({ version: "9" }).setToken(config.token);
 
 rest
   .put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
