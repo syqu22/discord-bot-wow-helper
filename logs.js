@@ -13,8 +13,8 @@ const getLog = async (code) => {
         translate: "True",
       },
     })
-    .then((res) => {
-      return res.data;
+    .then(({ data }) => {
+      return data;
     })
     .catch((err) => {
       console.log(err.message);

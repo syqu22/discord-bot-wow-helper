@@ -4,11 +4,12 @@ import config from "./config.json";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
-const getAPIConnection = async () => {
+// Connect to Blizzard API to get access token
+const BlizzardAPI = async () => {
   try {
-    await axios
+    return await axios
       .post(
-        "https://us.battle.net/oauth/token",
+        `https://eu.battle.net/oauth/token`,
         {},
         {
           params: {
@@ -18,24 +19,64 @@ const getAPIConnection = async () => {
           },
         }
       )
-      .then(async (res) => {
-        await axios
-          .get(
-            "https://us.api.blizzard.com/data/wow/token/index?namespace=dynamic-us",
-
-            {
-              headers: {
-                Authorization: `Bearer ${res.data.access_token}`,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-          });
+      .then(({ data }) => {
+        return data.access_token;
       });
   } catch (err) {
     console.log(err.message);
   }
 };
 
-getAPIConnection();
+// Get WoW token from given region
+const getWoWToken = async (region) => {
+  await BlizzardAPI().then(async (access_token) => {
+    await axios
+      .get(
+        `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      .then(({ data }) => {
+        console.log(data.price / 10000);
+      })
+      .catch((err) => console.log(err.message));
+  });
+};
+
+// TODO
+const destructureMePlease = ({
+  name,
+  realm,
+  level,
+  faction,
+  race,
+  active_spec,
+  character_class,
+  average_item_level,
+  achievement_points,
+  covenant_progress,
+  guild,
+}) => {};
+
+// Get Character info
+const getCharacter = async (region, realmSlug, characterName) => {
+  await BlizzardAPI().then(async (access_token) => {
+    await axios
+      .get(
+        `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      .then(({ data }) => {
+        // TODO
+        destructureMePlease(data);
+      })
+      .catch((err) => console.log(err.message));
+  });
+};
