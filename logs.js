@@ -4,9 +4,10 @@ import config from "./config.json";
 const API_URL = "https://www.warcraftlogs.com:443/v1/report/";
 const API_KEY = config.warcraftlogs_client;
 
-// Get logs JSON data from Warcraftlogs API
-const getLog = async (code) => {
-  return await axios
+// Fetch logs JSON data from Warcraftlogs API
+const fetchLogs = async (code) => {
+  let logs;
+  await axios
     .get(API_URL + "fights/" + code, {
       params: {
         api_key: API_KEY,
@@ -14,14 +15,16 @@ const getLog = async (code) => {
       },
     })
     .then(({ data }) => {
-      return data;
+      logs = data;
     })
     .catch((err) => {
       console.log(err.message);
     });
+
+  return logs;
 };
 
-// Change number to the appropriate zone name
+// Change zone id to the appropriate zone name
 const zoneName = (zoneId) => {
   switch (zoneId) {
     case 25:
@@ -45,7 +48,7 @@ const zoneName = (zoneId) => {
 const fightDetail = (fights) => {
   const parsedFights = [];
 
-  // Change number to the appropriate difficulty name
+  // Change fight difficulty id to the appropriate difficulty name
   const fightDifficulty = (difficulty) => {
     switch (difficulty) {
       case 20:
@@ -65,7 +68,7 @@ const fightDetail = (fights) => {
     }
   };
 
-  // Change number to the appropriate zone name
+  // Change boss health depending on his health percentage
   const bossHealth = (kill, bossPercentage) => {
     if (kill) {
       return "Defeated";
@@ -91,17 +94,17 @@ const fightDetail = (fights) => {
   return parsedFights;
 };
 
-// Return a object with all parsed data of given logs code
+// Return object with all parsed data of given logs code
 const logInfo = async (code) => {
-  return await getLog(code).then(async (log) => {
-    return {
-      title: log.title,
-      fights: fightDetail(log.fights),
-      total: log.fights.length,
-      duration: Math.abs(log.start - log.end),
-      zone: zoneName(log.zone),
-    };
-  });
+  let logs = await fetchLogs(code);
+
+  return {
+    title: logs.title,
+    fights: fightDetail(logs.fights),
+    total: logs.fights.length,
+    duration: Math.abs(logs.start - logs.end),
+    zone: zoneName(logs.zone),
+  };
 };
 
 export default logInfo;
