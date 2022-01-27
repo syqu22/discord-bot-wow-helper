@@ -1,7 +1,7 @@
 import axios from "axios";
-import config from "./config.json";
+import config from "../config.js";
 
-const BLIZZARD__URL = "https://eu.battle.net/oauth/token";
+const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
@@ -18,7 +18,7 @@ const interceptor = axios.interceptors.response.use(
 
       return axios
         .post(
-          BLIZZARD__URL,
+          BLIZZARD_URL,
           {},
           {
             params: {

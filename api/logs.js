@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "./config.json";
+import config from "../config.js";
 
 const API_URL = "https://www.warcraftlogs.com:443/v1/report/";
 const API_KEY = config.warcraftlogs_client;

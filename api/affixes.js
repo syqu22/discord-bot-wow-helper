@@ -1,4 +1,4 @@
-import data from "./data/affixes-data.json";
+import data from "./data/affixes-data.js";
 
 // Calculate how many weeks passed since release of the season
 const weeksSinceFirstWeek = () => {
@@ -7,6 +7,7 @@ const weeksSinceFirstWeek = () => {
   return Math.floor(timeDifference / (1000 * 3600 * 24 * 7) + 1);
 };
 
+// Return affixes for the current week
 export const currentAffixes = () => {
   let week = weeksSinceFirstWeek();
   const currentWeek = week;
@@ -17,6 +18,7 @@ export const currentAffixes = () => {
   return { week: currentWeek, affixes: data.affixes[week - 1] };
 };
 
+// Return affixes for the next week
 export const nextAffixes = () => {
   let week = weeksSinceFirstWeek() + 1;
   const nextWeek = week;
@@ -27,6 +29,7 @@ export const nextAffixes = () => {
   return { week: nextWeek, affixes: data.affixes[week - 1] };
 };
 
+// Return affixes for the previous week
 export const previousAffixes = () => {
   let week = weeksSinceFirstWeek() - 1;
   const previousWeek = week;
@@ -43,6 +46,7 @@ export const previousAffixes = () => {
   return { week: previousWeek, affixes: data.affixes[week - 1] };
 };
 
+// Return affixes for any specific week
 export const affixesFromWeek = (week) => {
   const givenWeek = week;
 

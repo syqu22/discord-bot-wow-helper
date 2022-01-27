@@ -4,7 +4,7 @@ import {
   nextAffixes,
   previousAffixes,
 } from "../affixes.js";
-import data from "../data/affixes-data.json";
+import data from "../data/affixes-data.js";
 import { jest } from "@jest/globals";
 
 // Simulate time as it is 25th week since release

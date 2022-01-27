@@ -1,6 +1,6 @@
-{
-  "first_week": "9:00 7-07-2021",
-  "affixes": [
+export default {
+  first_week: "9:00 7-07-2021",
+  affixes: [
     ["Tyrannical", "Raging", "Volcanic", "Tormented"],
     ["Fortified", "Inspiring", "Grievous", "Tormented"],
     ["Tyrannical", "Spiteful", "Necrotic", "Tormented"],
@@ -12,6 +12,6 @@
     ["Tyrannical", "Inspiring", "Quaking", "Tormented"],
     ["Fortified", "Sanguine", "Necrotic", "Tormented"],
     ["Tyrannical", "Bolstering", "Explosive", "Tormented"],
-    ["Fortified", "Bursting", "Storming", "Tormented"]
-  ]
-}
+    ["Fortified", "Bursting", "Storming", "Tormented"],
+  ],
+};

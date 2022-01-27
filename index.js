@@ -1,5 +1,5 @@
 import { Client, Intents } from "discord.js";
-import config from "./config.json";
+import config from "./config.js";
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
