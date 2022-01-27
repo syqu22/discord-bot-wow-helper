@@ -1,5 +1,6 @@
 import data from "./data/affixes-data.json";
 
+// Calculate how many weeks passed since release of the season
 const weeksSinceFirstWeek = () => {
   const timeDifference = new Date() - new Date(data["first_week"]);
 

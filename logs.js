@@ -41,7 +41,7 @@ const zoneName = (zoneId) => {
   }
 };
 
-// Parse data from single fight
+// Parse data of a single fight
 const fightDetail = (fights) => {
   const parsedFights = [];
 
@@ -91,7 +91,7 @@ const fightDetail = (fights) => {
   return parsedFights;
 };
 
-// Return object with all parsed data of given logs code
+// Return an object with all parsed data
 const logInfo = async (code) => {
   let logs = await fetchLogs(code);
 
