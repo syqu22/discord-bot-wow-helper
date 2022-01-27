@@ -6,8 +6,7 @@ const BLIZZARD_SECRET = config.blizzard_secret;
 
 // Connects to Blizzard API and returns access token needed for Authorization
 const blizzardAccessToken = async () => {
-  let access_token;
-  await axios
+  return await axios
     .post(
       `https://eu.battle.net/oauth/token`,
       {},
@@ -20,19 +19,16 @@ const blizzardAccessToken = async () => {
       }
     )
     .then(({ data }) => {
-      access_token = data.access_token;
+      return data.access_token;
     })
     .catch((err) => console.log(err.message));
-
-  return access_token;
 };
 
 // Fetch WoW token price from given region
 export const tokenPrice = async (region) => {
   let access_token = await blizzardAccessToken();
-  let token;
 
-  await axios
+  return await axios
     .get(
       `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`,
       {
@@ -42,34 +38,50 @@ export const tokenPrice = async (region) => {
       }
     )
     .then(({ data }) => {
-      token = data.price / 10000;
+      return data.price / 10000;
     })
     .catch((err) => console.log(err.message));
-
-  return token;
 };
 
-// TODO
-const destructureMePlease = ({
-  name,
-  realm,
-  level,
-  faction,
-  race,
-  active_spec,
-  character_class,
-  average_item_level,
-  achievement_points,
-  covenant_progress,
-  guild,
-}) => {};
+// Destructure important data from a character
+const destructureCharacterData = (character) => {
+  const {
+    name,
+    realm,
+    level,
+    faction,
+    guild,
+    character_class,
+    race,
+    covenant_progress,
+    active_spec,
+    average_item_level,
+    achievement_points,
+  } = character;
+
+  return {
+    name: name,
+    realm: realm.name.en_GB,
+    level: level,
+    faction: faction.name.en_GB,
+    guild: guild.name,
+    class: character_class.name.en_GB,
+    race: race.name.en_GB,
+    covenant: {
+      name: covenant_progress.chosen_covenant.name.en_GB,
+      renown: covenant_progress.renown_level,
+    },
+    spec: active_spec.name.en_GB,
+    ilvl: average_item_level,
+    achiev_points: achievement_points,
+  };
+};
 
 // Fetch Character profile data
 export const characterInfo = async (region, realmSlug, characterName) => {
   let access_token = await blizzardAccessToken();
-  let character;
 
-  await axios
+  return await axios
     .get(
       `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`,
       {
@@ -79,10 +91,7 @@ export const characterInfo = async (region, realmSlug, characterName) => {
       }
     )
     .then(({ data }) => {
-      // TODO
-      destructureMePlease(data);
+      return destructureCharacterData(data);
     })
     .catch((err) => console.log(err.message));
-
-  return character;
 };

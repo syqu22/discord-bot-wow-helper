@@ -6,8 +6,7 @@ const API_KEY = config.warcraftlogs_client;
 
 // Fetch logs JSON data from Warcraftlogs API
 const fetchLogs = async (code) => {
-  let logs;
-  await axios
+  return await axios
     .get(API_URL + "fights/" + code, {
       params: {
         api_key: API_KEY,
@@ -15,13 +14,11 @@ const fetchLogs = async (code) => {
       },
     })
     .then(({ data }) => {
-      logs = data;
+      return data;
     })
     .catch((err) => {
       console.log(err.message);
     });
-
-  return logs;
 };
 
 // Change zone id to the appropriate zone name
