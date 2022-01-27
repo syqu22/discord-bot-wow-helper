@@ -1,41 +1,55 @@
 import axios from "axios";
 import config from "./config.json";
 
+const BLIZZARD__URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
-// Connects to Blizzard API and returns access token needed for Authorization
-const blizzardAccessToken = async () => {
-  return await axios
-    .post(
-      `https://eu.battle.net/oauth/token`,
-      {},
-      {
-        params: {
-          grant_type: "client_credentials",
-          client_id: BLIZZARD_CLIENT,
-          client_secret: BLIZZARD_SECRET,
-        },
-      }
-    )
-    .then(({ data }) => {
-      return data.access_token;
-    })
-    .catch((err) => console.log(err.message));
-};
+// Create axios interceptor to connect to Blizzard API retrieve access token
+// and  refresh it once expiration
+// TODO test if its actually working
+const interceptor = axios.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (err) => {
+    if (err.response.status === 401) {
+      axios.interceptors.response.eject(interceptor);
+
+      return axios
+        .post(
+          BLIZZARD__URL,
+          {},
+          {
+            params: {
+              grant_type: "client_credentials",
+              client_id: BLIZZARD_CLIENT,
+              client_secret: BLIZZARD_SECRET,
+            },
+          }
+        )
+        .then(({ data }) => {
+          err.response.config.headers[
+            "Authorization"
+          ] = `Bearer ${data.access_token}`;
+          return axios(err.response.config);
+        })
+        .catch((err) => {
+          return Promise.reject(err);
+        })
+        .finally(interceptor);
+    }
+    return Promise.reject(err);
+  }
+);
+
+axios.interceptors.response.use(interceptor);
 
 // Fetch WoW token price from given region
 export const tokenPrice = async (region) => {
-  let access_token = await blizzardAccessToken();
-
   return await axios
     .get(
-      `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
+      `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`
     )
     .then(({ data }) => {
       return data.price / 10000;
@@ -79,16 +93,9 @@ const destructureCharacterData = (character) => {
 
 // Fetch Character profile data
 export const characterInfo = async (region, realmSlug, characterName) => {
-  let access_token = await blizzardAccessToken();
-
   return await axios
     .get(
-      `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
+      `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`
     )
     .then(({ data }) => {
       return destructureCharacterData(data);
