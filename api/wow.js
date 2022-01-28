@@ -1,5 +1,5 @@
-import axios from "axios";
-import config from "../config.js";
+const axios = require("axios");
+const config = require("../config.json");
 
 const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;

@@ -1,11 +1,11 @@
-import {
+const {
   affixesFromWeek,
   currentAffixes,
   nextAffixes,
   previousAffixes,
-} from "../affixes.js";
-import data from "../data/affixes-data.js";
-import { jest } from "@jest/globals";
+} = require("../affixes.js");
+const data = require("../data/affixes-data.json");
+const jest = require("@jest/globals");
 
 // Simulate time as it is 25th week since release
 const fakeDate = new Date("10:50 12-23-2021");

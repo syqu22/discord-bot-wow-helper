@@ -1,4 +1,4 @@
-import data from "./data/affixes-data.js";
+const data = require("../data/affixes-data.json");
 
 // Calculate how many weeks passed since release of the season
 const weeksSinceFirstWeek = () => {

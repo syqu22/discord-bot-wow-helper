@@ -1,7 +1,7 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
-import config from "../config";
+const SlashCommandBuilder = require("@discordjs/builders");
+const REST = require("@discordjs/rest");
+const Routes = require("discord-api-types/v9");
+const config = require("../config.json");
 
 // For testing
 const clientId = "934929013238034442";
