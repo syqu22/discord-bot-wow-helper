@@ -7,8 +7,8 @@ const weeksSinceFirstWeek = () => {
   return Math.floor(timeDifference / (1000 * 3600 * 24 * 7) + 1);
 };
 
-// Return affixes for the current week
-export const currentAffixes = () => {
+// Return af fixes for the current week
+exports.currentAffixes = () => {
   let week = weeksSinceFirstWeek();
   const currentWeek = week;
 
@@ -19,7 +19,7 @@ export const currentAffixes = () => {
 };
 
 // Return affixes for the next week
-export const nextAffixes = () => {
+exports.nextAffixes = () => {
   let week = weeksSinceFirstWeek() + 1;
   const nextWeek = week;
 
@@ -30,7 +30,7 @@ export const nextAffixes = () => {
 };
 
 // Return affixes for the previous week
-export const previousAffixes = () => {
+exports.previousAffixes = () => {
   let week = weeksSinceFirstWeek() - 1;
   const previousWeek = week;
 
@@ -47,7 +47,7 @@ export const previousAffixes = () => {
 };
 
 // Return affixes for any specific week
-export const affixesFromWeek = (week) => {
+exports.affixesFromWeek = (week) => {
   const givenWeek = week;
 
   if (week < 1) {

@@ -46,7 +46,7 @@ const interceptor = axios.interceptors.response.use(
 axios.interceptors.response.use(interceptor);
 
 // Fetch wow token price
-export const tokenPrice = async (region) => {
+exports.tokenPrice = async (region) => {
   return await axios
     .get(
       `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`
@@ -92,7 +92,7 @@ const destructureCharacterData = (character) => {
 };
 
 // Fetch character's profile data
-export const characterInfo = async (region, realmSlug, characterName) => {
+exports.characterInfo = async (region, realmSlug, characterName) => {
   return await axios
     .get(
       `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`
@@ -105,7 +105,7 @@ export const characterInfo = async (region, realmSlug, characterName) => {
 
 // Fetch character's profile avatar and return an url of it
 // ex. https://render.worldofwarcraft.com/eu/character/xxx/xxx/xxx-inset.jpg
-export const characterAvatar = async (region, realmSlug, characterName) => {
+exports.characterAvatar = async (region, realmSlug, characterName) => {
   return await axios
     .get(
       `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}/character-media?namespace=profile-${region}`

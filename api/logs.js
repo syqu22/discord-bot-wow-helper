@@ -92,7 +92,7 @@ const fightDetail = (fights) => {
 };
 
 // Return an object with all parsed data
-const logInfo = async (code) => {
+exports.logInfo = async (code) => {
   let logs = await fetchLogs(code);
 
   return {
@@ -103,5 +103,3 @@ const logInfo = async (code) => {
     zone: zoneName(logs.zone),
   };
 };
-
-export default logInfo;
