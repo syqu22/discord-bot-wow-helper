@@ -3,9 +3,8 @@ const {
   currentAffixes,
   nextAffixes,
   previousAffixes,
-} = require("../affixes.js");
+} = require("../api/affixes.js");
 const data = require("../data/affixes-data.json");
-const jest = require("@jest/globals");
 
 // Simulate time as it is 25th week since release
 const fakeDate = new Date("10:50 12-23-2021");
