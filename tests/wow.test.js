@@ -19,8 +19,3 @@ test("character_avatar", () => {
 });
 
 // TODO fix axios tests
-
-// TODO make fetch token info a scheduled task
-// TODO store token prices in database
-// TODO make all regions fetch token price at the same time
-// TODO finish tests

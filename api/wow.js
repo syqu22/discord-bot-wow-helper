@@ -1,22 +1,33 @@
+const fs = require("fs");
 const axios = require("axios");
 const config = require("../config.json");
+const { LocalStorage } = require("node-localstorage");
 
+// Set global variables for Blizzard API
 const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
-// Create axios interceptor to connect to Blizzard API retrieve access token
-// and  refresh it once expiration
-// TODO test if its actually working
-const interceptor = axios.interceptors.response.use(
+// Create LocalStorage instance for access token
+const localStorage = new LocalStorage("./storage");
+
+// Create axios instance to retrieve access token from LocalStorage
+const connection = axios.create({
+  headers: {
+    Authorization: localStorage.getItem("access_token")
+      ? `Bearer ${localStorage.getItem("access_token")}`
+      : null,
+  },
+});
+
+// Create axios interceptor that on Authorization will refresh the access token
+connection.interceptors.response.use(
   (res) => {
     return res;
   },
   async (err) => {
     if (err.response.status === 401) {
-      axios.interceptors.response.eject(interceptor);
-
-      return axios
+      return connection
         .post(
           BLIZZARD_URL,
           {},
@@ -29,32 +40,45 @@ const interceptor = axios.interceptors.response.use(
           }
         )
         .then(({ data }) => {
+          localStorage.setItem("access_token", data.access_token);
+          connection.defaults.headers[
+            "Authorization"
+          ] = `Bearer ${data.access_token}`;
           err.response.config.headers[
             "Authorization"
           ] = `Bearer ${data.access_token}`;
-          return axios(err.response.config);
+          return connection(err.response.config);
         })
         .catch((err) => {
           return Promise.reject(err);
-        })
-        .finally(interceptor);
+        });
     }
     return Promise.reject(err);
   }
 );
 
-axios.interceptors.response.use(interceptor);
+// Fetch wow token price from all regions every 30min save it to JSON file
+// TODO add scheduler
+const tokenPrice = async () => {
+  const regions = ["eu", "us", "kr", "tw"];
+  const tokens = {};
 
-// Fetch wow token price
-exports.tokenPrice = async (region) => {
-  return await axios
-    .get(
-      `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`
-    )
-    .then(({ data }) => {
-      return data.price / 10000;
-    })
-    .catch((err) => console.log(err.message));
+  for (const region of regions) {
+    await connection
+      .get(
+        `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`
+      )
+      .then(({ data }) => {
+        tokens[region] = data.price / 10000;
+      })
+      .catch((err) => console.log(err.message));
+  }
+
+  // Save token data as JSON file
+  fs.writeFile("data/wowtoken-data.json", JSON.stringify(tokens), (err) => {
+    if (err) throw err;
+    console.log("Token prices successfully saved.");
+  });
 };
 
 // Destructure character's profile data
@@ -93,7 +117,7 @@ const destructureCharacterData = (character) => {
 
 // Fetch character's profile data
 exports.characterInfo = async (region, realmSlug, characterName) => {
-  return await axios
+  return await connection
     .get(
       `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`
     )
@@ -106,7 +130,7 @@ exports.characterInfo = async (region, realmSlug, characterName) => {
 // Fetch character's profile avatar and return an url of it
 // ex. https://render.worldofwarcraft.com/eu/character/xxx/xxx/xxx-inset.jpg
 exports.characterAvatar = async (region, realmSlug, characterName) => {
-  return await axios
+  return await connection
     .get(
       `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}/character-media?namespace=profile-${region}`
     )
@@ -117,3 +141,8 @@ exports.characterAvatar = async (region, realmSlug, characterName) => {
       console.log(err.message);
     });
 };
+const test = async () => {
+  await tokenPrice();
+};
+
+test();
