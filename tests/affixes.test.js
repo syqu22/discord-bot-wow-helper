@@ -7,9 +7,9 @@ const {
 const data = require("../data/affixes-data.json");
 
 // Simulate time as it is 25th week since release
-const fakeDate = new Date("10:50 12-23-2021");
+const dateMock = new Date("10:50 12-23-2021");
 jest.useFakeTimers();
-jest.setSystemTime(fakeDate);
+jest.setSystemTime(dateMock);
 
 test("first_week should be in the correct date string format", () => {
   expect(Date.parse(data.first_week)).not.toBeNaN();
@@ -20,7 +20,7 @@ test("affixes should contain a list of 12 list elements", () => {
 });
 
 test("Current fake time should be exactly 10:50 12-23-2021", () => {
-  expect(fakeDate).toStrictEqual(new Date());
+  expect(dateMock).toStrictEqual(new Date());
 });
 
 test("currentAffixes should return affixes from week 25", () => {

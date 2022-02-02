@@ -9,7 +9,7 @@ const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
 // Create LocalStorage instance for access token
-const localStorage = new LocalStorage("./storage");
+const localStorage = new LocalStorage("./");
 
 // Create axios instance to retrieve access token from LocalStorage
 const connection = axios.create({
@@ -57,9 +57,8 @@ connection.interceptors.response.use(
   }
 );
 
-// Fetch wow token price from all regions every 30min save it to JSON file
-// TODO add scheduler
-const tokenPrice = async () => {
+// Fetch wow token price from all regions and save it to a JSON file
+exports.tokenPrice = async () => {
   const regions = ["eu", "us", "kr", "tw"];
   const tokens = {};
 
@@ -75,10 +74,14 @@ const tokenPrice = async () => {
   }
 
   // Save token data as JSON file
-  fs.writeFile("data/wowtoken-data.json", JSON.stringify(tokens), (err) => {
-    if (err) throw err;
-    console.log("Token prices successfully saved.");
-  });
+  await fs.promises.writeFile(
+    "data/wowtoken-data.json",
+    JSON.stringify(tokens),
+    (err) => {
+      if (err) throw err;
+      console.log("Token prices successfully saved.");
+    }
+  );
 };
 
 // Destructure character's profile data
@@ -141,8 +144,3 @@ exports.characterAvatar = async (region, realmSlug, characterName) => {
       console.log(err.message);
     });
 };
-const test = async () => {
-  await tokenPrice();
-};
-
-test();
