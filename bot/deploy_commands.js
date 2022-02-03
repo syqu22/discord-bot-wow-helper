@@ -1,6 +1,6 @@
-const SlashCommandBuilder = require("@discordjs/builders");
-const REST = require("@discordjs/rest");
-const Routes = require("discord-api-types/v9");
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
 const config = require("../config.json");
 
 // For testing
@@ -12,12 +12,22 @@ const commands = [
     .setName("log")
     .setDescription(
       "Shows fights from WarcraftLogs log as a list with clickable link to each fight."
-    ),
+    )
+    .addSubcommand((sub) => {
+      return sub.setName("testlog").setDescription("testdesc");
+    }),
   new SlashCommandBuilder()
     .setName("affixes")
     .setDescription(
       "Shows affixes for previous/current/next week. Can also show affixes for the week user wants."
-    ),
+    )
+    .addStringOption((option) => {
+      return option
+        .setName("options")
+        .setDescription("test")
+        .addChoice("test", "test_test")
+        .addChoice("test2", "test_test2");
+    }),
   new SlashCommandBuilder()
     .setName("token")
     .setDescription(
