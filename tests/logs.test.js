@@ -20,5 +20,5 @@ test("logInfo should return promise with correct logs data", () => {
     expect(data.fights[6].name).toBe("Guardian of the First Ones");
     expect(data.fights[6].difficulty).toBe("Mythic");
     expect(data.fights[6].bossPercentage).toBe("Defeated");
-  }, 10000);
+  });
 });

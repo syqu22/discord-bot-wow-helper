@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { tokenPrice, characterInfo, characterAvatar } = require("../api/wow.js");
+const { tokenPrice, characterInfo } = require("../api/wow.js");
 
 const charMock = {
   region: "eu",
@@ -19,7 +19,7 @@ test("tokenPrice should fetch WoW tokens correctly and save them to data folder"
       expect(tokens.us).toBeTruthy();
     });
   });
-}, 15000);
+}, 25000);
 
 test("characterInfo should return correct character data", () => {
   return characterInfo(charMock.region, charMock.realm, charMock.name).then(
@@ -35,14 +35,7 @@ test("characterInfo should return correct character data", () => {
       expect(data.race).toBeTruthy();
       expect(data.realm).toBe("Kazzak");
       expect(data.spec).toBe("Restoration");
-    }
-  );
-});
-
-test("characterAvatar should return url of character's image", () => {
-  return characterAvatar(charMock.region, charMock.realm, charMock.name).then(
-    (data) => {
-      expect(data).toMatch(
+      expect(data.image).toMatch(
         `render.worldofwarcraft.com/${charMock.region}/character/${charMock.realm}/`
       );
     }

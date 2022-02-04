@@ -26,7 +26,8 @@ connection.interceptors.response.use(
     return res;
   },
   async (err) => {
-    if (err.response.status === 401) {
+    // 400 error when token is expired, 401 error when no token
+    if (err.response.status === 400 || err.response.status === 401) {
       return connection
         .post(
           BLIZZARD_URL,
@@ -49,9 +50,7 @@ connection.interceptors.response.use(
           ] = `Bearer ${data.access_token}`;
           return connection(err.response.config);
         })
-        .catch((err) => {
-          return Promise.reject(err);
-        });
+        .catch((err) => Promise.reject(err));
     }
     return Promise.reject(err);
   }
@@ -70,7 +69,7 @@ exports.tokenPrice = async () => {
       .then(({ data }) => {
         tokens[region] = data.price / 10000;
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => Promise.reject(err));
   }
 
   // Save token data as JSON file
@@ -78,14 +77,27 @@ exports.tokenPrice = async () => {
     "data/wowtoken-data.json",
     JSON.stringify(tokens),
     (err) => {
-      if (err) throw err;
+      if (err) Promise.reject(err);
       console.log("Token prices successfully saved.");
     }
   );
 };
 
+// Fetch character's profile avatar and return an url of it
+// ex. https://render.worldofwarcraft.com/eu/character/xxx/xxx/xxx-inset.jpg
+const characterAvatar = async (region, realmSlug, characterName) => {
+  return await connection
+    .get(
+      `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}/character-media?namespace=profile-${region}`
+    )
+    .then(({ data }) => {
+      return data.assets[1].value;
+    })
+    .catch((err) => Promise.reject(err));
+};
+
 // Destructure character's profile data
-const destructureCharacterData = (character) => {
+const character = async (data, info) => {
   const {
     name,
     realm,
@@ -98,23 +110,28 @@ const destructureCharacterData = (character) => {
     active_spec,
     average_item_level,
     achievement_points,
-  } = character;
+  } = data;
 
   return {
     name: name,
     realm: realm.name.en_GB,
     level: level,
-    faction: faction.name.en_GB,
-    guild: guild.name,
-    class: character_class.name.en_GB,
+    faction: faction?.name.en_GB,
+    guild: guild?.name,
+    class: character_class?.name.en_GB,
     race: race.name.en_GB,
     covenant: {
-      name: covenant_progress.chosen_covenant.name.en_GB,
-      renown: covenant_progress.renown_level,
+      name: covenant_progress?.chosen_covenant.name.en_GB,
+      renown: covenant_progress?.renown_level,
     },
-    spec: active_spec.name.en_GB,
+    spec: active_spec?.name.en_GB,
     ilvl: average_item_level,
     achiev_points: achievement_points,
+    image: await characterAvatar(
+      info.region,
+      info.realmSlug,
+      info.characterName
+    ),
   };
 };
 
@@ -125,22 +142,11 @@ exports.characterInfo = async (region, realmSlug, characterName) => {
       `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}?namespace=profile-${region}`
     )
     .then(({ data }) => {
-      return destructureCharacterData(data);
+      return character(data, {
+        region,
+        realmSlug,
+        characterName,
+      });
     })
-    .catch((err) => console.log(err.message));
-};
-
-// Fetch character's profile avatar and return an url of it
-// ex. https://render.worldofwarcraft.com/eu/character/xxx/xxx/xxx-inset.jpg
-exports.characterAvatar = async (region, realmSlug, characterName) => {
-  return await connection
-    .get(
-      `https://${region}.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName}/character-media?namespace=profile-${region}`
-    )
-    .then(({ data }) => {
-      return data.assets[1].value;
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    .catch((err) => Promise.reject(err));
 };

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node . ",
-    "commands": "node bot/deploy_commands.js",
+    "commands": "node deploy-commands.js",
     "test": "node node_modules/jest/bin/jest.js",
     "lint": "eslint ."
   },

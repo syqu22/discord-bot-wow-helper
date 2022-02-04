@@ -1,3 +1,4 @@
 node_modules
 config.json
 access_token
+data/wowtoken-data.json
