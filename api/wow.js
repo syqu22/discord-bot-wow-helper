@@ -77,7 +77,7 @@ exports.tokenPrice = async () => {
     "data/wowtoken-data.json",
     JSON.stringify(tokens),
     (err) => {
-      if (err) Promise.reject(err);
+      if (err) throw err;
       console.log("Token prices successfully saved.");
     }
   );
