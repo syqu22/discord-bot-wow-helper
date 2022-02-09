@@ -15,12 +15,10 @@ const clientId = config.client;
 const guildId = "842688263445282817";
 
 // Load commands data
-console.log("Starting loading commands from files...");
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   commands.push(command.data.toJSON());
 }
-console.log("Commands successfuly loaded.");
 
 const rest = new REST({ version: "9" }).setToken(config.token);
 

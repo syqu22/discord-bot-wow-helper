@@ -7,7 +7,7 @@ const {
   affixesFromWeek,
 } = require("../api/affixes.js");
 
-const customEmbed = (weekNum) => {
+const customEmbed = async (weekNum) => {
   const message = new MessageEmbed().setColor(2075661).setTitle("Affixes");
 
   if (weekNum) {
@@ -51,6 +51,6 @@ module.exports = {
   async execute(interaction) {
     const week = interaction.options.getInteger("week");
 
-    interaction.reply({ embeds: [customEmbed(week)] });
+    await interaction.reply({ embeds: [await customEmbed(week)] });
   },
 };

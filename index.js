@@ -13,12 +13,10 @@ const commandFiles = fs
   .filter((file) => file.endsWith(".js"));
 
 // Load commands data
-console.log("Starting loading commands from files...");
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.data.name, command);
 }
-console.log("Commands successfuly loaded.\n\n");
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);
@@ -34,6 +32,7 @@ client.on("interactionCreate", async (interaction) => {
     await command.execute(interaction);
   } catch (err) {
     console.error(err);
+
     await interaction.reply({
       content: "There was an error while executing this command!",
       ephemeral: true,

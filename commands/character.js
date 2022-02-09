@@ -1,15 +1,66 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { MessageEmbed } = require("discord.js");
+const { characterInfo } = require("../api/wow");
+
+const customEmbed = async (region, name, realm) => {
+  const message = new MessageEmbed().setColor(4433254);
+
+  name = name.toLowerCase();
+  realm = realm.toLowerCase().replace(" ", "-");
+
+  try {
+    const character = await characterInfo(region, realm, name);
+    const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}/`;
+
+    message
+      .setTitle(
+        `(${character.level}) ${character.name} - ${character.realm} ${
+          character.guild ? `<${character.guild}>` : ""
+        }`
+      )
+      .setURL(armoryUrl)
+      .setImage(character.image)
+      .addField(
+        "Spec",
+        `${character.race} ${character.spec} ${character.class}`,
+        true
+      )
+      .addField("Faction", `${character.faction}`, true)
+      .addField("Item level", `(${character.ilvl})`, true)
+      .addField(
+        "Links",
+        `[Raider.IO](https://raider.io/characters/${region}/${realm}/${name}) | [WarcraftLogs](https://www.warcraftlogs.com/character/${region}/${realm}/${name}) | [WoWProgress](https://www.wowprogress.com/character/${region}/${realm}/${name})`,
+        true
+      )
+      .addField(
+        "Covenant",
+        `${character.covenant.name} (${character.covenant.renown})`,
+        true
+      )
+      .addField(
+        "Achievements",
+        `[${character.achiev_points}](${armoryUrl + "achievements"})`,
+        true
+      );
+  } catch {
+    return new MessageEmbed()
+      .setTitle("Wrong info")
+      .setDescription(
+        `Cannot find character with name **${name}** on realm **${realm}**`
+      );
+  }
+
+  return message;
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("character")
-    .setDescription(
-      "Shows information about given character. Make sure character name and realm."
-    )
+    .setDescription("Shows information about given character.")
     .addStringOption((option) => {
       return option
         .setName("region")
-        .setDescription("select region")
+        .setDescription("Select character's region")
         .setRequired(true)
         .addChoices([
           ["EU", "eu"],
@@ -20,17 +71,23 @@ module.exports = {
     })
     .addStringOption((option) => {
       return option
-        .setName("realm")
-        .setDescription("select realm")
+        .setName("name")
+        .setDescription("Insert character's name")
         .setRequired(true);
     })
     .addStringOption((option) => {
       return option
-        .setName("name")
-        .setDescription("insert character name")
+        .setName("realm")
+        .setDescription("Insert character's realm")
         .setRequired(true);
     }),
   async execute(interaction) {
-    await interaction;
+    const region = interaction.options.getString("region");
+    const name = interaction.options.getString("name");
+    const realm = interaction.options.getString("realm");
+
+    await interaction.reply({
+      embeds: [await customEmbed(region, name, realm)],
+    });
   },
 };
