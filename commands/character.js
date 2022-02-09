@@ -4,51 +4,46 @@ const { characterInfo } = require("../api/wow");
 
 const customEmbed = async (region, name, realm) => {
   const message = new MessageEmbed().setColor(4433254);
+  const character = await characterInfo(region, realm, name);
+  const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}/`;
 
   name = name.toLowerCase();
   realm = realm.toLowerCase().replace(" ", "-");
 
-  try {
-    const character = await characterInfo(region, realm, name);
-    const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}/`;
-
-    message
-      .setTitle(
-        `(${character.level}) ${character.name} - ${character.realm} ${
-          character.guild ? `<${character.guild}>` : ""
-        }`
-      )
-      .setURL(armoryUrl)
-      .setImage(character.image)
-      .addField(
-        "Spec",
-        `${character.race} ${character.spec} ${character.class}`,
-        true
-      )
-      .addField("Faction", `${character.faction}`, true)
-      .addField("Item level", `(${character.ilvl})`, true)
-      .addField(
-        "Links",
-        `[Raider.IO](https://raider.io/characters/${region}/${realm}/${name}) | [WarcraftLogs](https://www.warcraftlogs.com/character/${region}/${realm}/${name}) | [WoWProgress](https://www.wowprogress.com/character/${region}/${realm}/${name})`,
-        true
-      )
-      .addField(
-        "Covenant",
-        `${character.covenant.name} (${character.covenant.renown})`,
-        true
-      )
-      .addField(
-        "Achievements",
-        `[${character.achiev_points}](${armoryUrl + "achievements"})`,
-        true
-      );
-  } catch {
-    return new MessageEmbed()
-      .setTitle("Wrong info")
-      .setDescription(
-        `Cannot find character with name **${name}** on realm **${realm}**`
-      );
-  }
+  message
+    .setTitle(
+      `(${character.level}) ${character.name} - ${character.realm} ${
+        character.guild ? `<${character.guild}>` : ""
+      }`
+    )
+    .setURL(armoryUrl)
+    .setImage(character.image)
+    .addField(
+      "Spec",
+      `${character.race} ${character.spec} ${character.class}`,
+      true
+    )
+    .addField("Faction", `${character.faction}`, true)
+    .addField(
+      "Item level",
+      `(${character.ilvl.avg}) ${character.ilvl.eq}`,
+      true
+    )
+    .addField(
+      "Links",
+      `[Raider.IO](https://raider.io/characters/${region}/${realm}/${name}) | [WarcraftLogs](https://www.warcraftlogs.com/character/${region}/${realm}/${name}) | [WoWProgress](https://www.wowprogress.com/character/${region}/${realm}/${name})`,
+      true
+    )
+    .addField(
+      "Covenant",
+      `${character.covenant.name} (${character.covenant.renown})`,
+      true
+    )
+    .addField(
+      "Achievements",
+      `[${character.achiev_points}](${armoryUrl + "achievements"})`,
+      true
+    );
 
   return message;
 };
@@ -86,8 +81,18 @@ module.exports = {
     const name = interaction.options.getString("name");
     const realm = interaction.options.getString("realm");
 
-    await interaction.reply({
-      embeds: [await customEmbed(region, name, realm)],
-    });
+    await interaction.deferReply();
+    try {
+      const embed = await customEmbed(region, name, realm);
+      await interaction.editReply({
+        embeds: [embed],
+      });
+    } catch {
+      await interaction
+        .editReply(
+          `Cannot find character with name **${name}** on realm **${realm}**`
+        )
+        .then((reply) => setTimeout(() => reply.delete(), 5000));
+    }
   },
 };

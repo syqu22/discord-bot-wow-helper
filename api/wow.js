@@ -109,6 +109,7 @@ const character = async (data, info) => {
     covenant_progress,
     active_spec,
     average_item_level,
+    equipped_item_level,
     achievement_points,
   } = data;
 
@@ -125,7 +126,10 @@ const character = async (data, info) => {
       renown: covenant_progress?.renown_level,
     },
     spec: active_spec?.name.en_GB,
-    ilvl: average_item_level,
+    ilvl: {
+      avg: average_item_level,
+      eq: equipped_item_level,
+    },
     achiev_points: achievement_points,
     image: await characterAvatar(
       info.region,
