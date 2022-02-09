@@ -7,7 +7,6 @@ const { LocalStorage } = require("node-localstorage");
 const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
-
 // Create LocalStorage instance for access token
 const localStorage = new LocalStorage("./");
 
@@ -59,7 +58,7 @@ connection.interceptors.response.use(
 // Fetch wow token price from all regions and save it to a JSON file
 exports.tokenPrice = async () => {
   const regions = ["eu", "us", "kr", "tw"];
-  const tokens = {};
+  const tokens = { regions: {}, last_update: 0 };
 
   for (const region of regions) {
     await connection
@@ -67,7 +66,10 @@ exports.tokenPrice = async () => {
         `https://${region}.api.blizzard.com/data/wow/token/index?namespace=dynamic-${region}`
       )
       .then(({ data }) => {
-        tokens[region] = data.price / 10000;
+        tokens.regions[region] = data.price / 10000;
+      })
+      .finally(() => {
+        tokens.last_update = new Date().getTime();
       })
       .catch((err) => Promise.reject(err));
   }

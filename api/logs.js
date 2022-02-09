@@ -75,17 +75,28 @@ const fightDetail = (fights) => {
   };
 
   // Do the destructuring for each fight
-  fights.forEach(({ boss, name, difficulty, bossPercentage, kill }) => {
-    // Skip trash
-    if (boss) {
-      parsedFights.push({
-        boss: boss,
-        name: name,
-        difficulty: fightDifficulty(difficulty),
-        bossPercentage: bossHealth(kill, bossPercentage),
-      });
+  fights.forEach(
+    ({
+      boss,
+      name,
+      difficulty,
+      start_time,
+      end_time,
+      bossPercentage,
+      kill,
+    }) => {
+      // Skip trash
+      if (boss) {
+        parsedFights.push({
+          boss: boss,
+          name: name,
+          difficulty: fightDifficulty(difficulty),
+          duration: Math.abs(start_time - end_time),
+          bossPercentage: bossHealth(kill, bossPercentage),
+        });
+      }
     }
-  });
+  );
 
   return parsedFights;
 };
@@ -98,7 +109,6 @@ exports.logInfo = async (code) => {
   return {
     title: logs.title,
     fights: fights,
-    total: fights.length,
     duration: Math.abs(logs.start - logs.end),
     zone: zoneName(logs.zone),
   };

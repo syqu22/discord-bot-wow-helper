@@ -5,7 +5,7 @@ const { characterInfo } = require("../api/wow");
 const customEmbed = async (region, name, realm) => {
   const message = new MessageEmbed().setColor(4433254);
   const character = await characterInfo(region, realm, name);
-  const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}/`;
+  const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}`;
 
   name = name.toLowerCase();
   realm = realm.toLowerCase().replace(" ", "-");
@@ -41,7 +41,7 @@ const customEmbed = async (region, name, realm) => {
     )
     .addField(
       "Achievements",
-      `[${character.achiev_points}](${armoryUrl + "achievements"})`,
+      `[${character.achiev_points}](${armoryUrl + "/achievements"})`,
       true
     );
 
@@ -90,7 +90,7 @@ module.exports = {
     } catch {
       await interaction
         .editReply(
-          `Cannot find character with name **${name}** on realm **${realm}**`
+          `Cannot find Character with name **${name}** on realm **${realm}**`
         )
         .then((reply) => setTimeout(() => reply.delete(), 5000));
     }

@@ -13,13 +13,14 @@ test("tokenPrice should fetch WoW tokens correctly and save them to data folder"
       expect(err).toBe(null);
 
       const tokens = JSON.parse(data);
-      expect(tokens.eu).toBeTruthy();
-      expect(tokens.kr).toBeTruthy();
-      expect(tokens.tw).toBeTruthy();
-      expect(tokens.us).toBeTruthy();
+      expect(tokens.regions.eu).toBeTruthy();
+      expect(tokens.regions.kr).toBeTruthy();
+      expect(tokens.regions.tw).toBeTruthy();
+      expect(tokens.regions.us).toBeTruthy();
+      expect(tokens.last_update).toBeTruthy();
     });
   });
-}, 25000);
+}, 20000);
 
 test("characterInfo should return correct character data", () => {
   return characterInfo(charMock.region, charMock.realm, charMock.name).then(
@@ -40,4 +41,4 @@ test("characterInfo should return correct character data", () => {
       );
     }
   );
-});
+}, 10000);
