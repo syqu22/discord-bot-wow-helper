@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const { characterInfo } = require("../api/wow");
 
 const customEmbed = async (region, name, realm) => {
-  const message = new MessageEmbed().setColor(4433254);
+  const message = new MessageEmbed().setColor("NOT_QUITE_BLACK");
   const character = await characterInfo(region, realm, name);
   const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}`;
 
@@ -18,31 +18,33 @@ const customEmbed = async (region, name, realm) => {
     )
     .setURL(armoryUrl)
     .setImage(character.image)
-    .addField(
-      "Spec",
-      `${character.race} ${character.spec} ${character.class}`,
-      true
-    )
-    .addField("Faction", `${character.faction}`, true)
-    .addField(
-      "Item level",
-      `(${character.ilvl.avg}) ${character.ilvl.eq}`,
-      true
-    )
-    .addField(
-      "Links",
-      `[Raider.IO](https://raider.io/characters/${region}/${realm}/${name}) | [WarcraftLogs](https://www.warcraftlogs.com/character/${region}/${realm}/${name}) | [WoWProgress](https://www.wowprogress.com/character/${region}/${realm}/${name})`,
-      true
-    )
-    .addField(
-      "Covenant",
-      `${character.covenant.name} (${character.covenant.renown})`,
-      true
-    )
-    .addField(
-      "Achievements",
-      `[${character.achiev_points}](${armoryUrl + "/achievements"})`,
-      true
+    .addFields(
+      {
+        name: "Spec",
+        value: `${character.race} ${character.spec} ${character.class}`,
+        inline: true,
+      },
+      { name: "Faction", value: `${character.faction}`, inline: true },
+      {
+        name: "Item level",
+        value: `(${character.ilvl.avg}) ${character.ilvl.eq}`,
+        inline: true,
+      },
+      {
+        name: "Links",
+        value: `[Raider.IO](https://raider.io/characters/${region}/${realm}/${name}) | [WarcraftLogs](https://www.warcraftlogs.com/character/${region}/${realm}/${name}) | [WoWProgress](https://www.wowprogress.com/character/${region}/${realm}/${name})`,
+        inline: true,
+      },
+      {
+        name: "Covenant",
+        value: `${character.covenant.name} (${character.covenant.renown})`,
+        inline: true,
+      },
+      {
+        name: "Achievements",
+        value: `[${character.achiev_points}](${armoryUrl + "/achievements"})`,
+        inline: true,
+      }
     );
 
   return message;

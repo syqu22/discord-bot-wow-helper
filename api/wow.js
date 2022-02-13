@@ -25,8 +25,14 @@ connection.interceptors.response.use(
     return res;
   },
   async (err) => {
-    // 400 error when token is expired, 401 error when no token
-    if (err.response.status === 400 || err.response.status === 401) {
+    // If current token is expired/wrong remove it from headers
+    if (err.response.data.error === "invalid_token") {
+      delete connection.defaults.headers["Authorization"];
+      delete err.response.config.headers["Authorization"];
+    }
+
+    // On authorization error when no token is set
+    if (err.response.status === 401) {
       return connection
         .post(
           BLIZZARD_URL,
@@ -73,16 +79,12 @@ exports.tokenPrice = async () => {
       })
       .catch((err) => Promise.reject(err));
   }
-
   // Save token data as JSON file
-  await fs.promises.writeFile(
-    "data/wowtoken-data.json",
-    JSON.stringify(tokens),
-    (err) => {
+  await fs.promises
+    .writeFile("data/wowtoken-data.json", JSON.stringify(tokens), (err) => {
       if (err) throw err;
-      console.log("Token prices successfully saved.");
-    }
-  );
+    })
+    .then(console.log("Token prices successfully saved."));
 };
 
 // Fetch character's profile avatar and return an url of it

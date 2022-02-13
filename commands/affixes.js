@@ -8,7 +8,9 @@ const {
 } = require("../api/affixes.js");
 
 const customEmbed = async (weekNum) => {
-  const message = new MessageEmbed().setColor(2075661).setTitle("Affixes");
+  const message = new MessageEmbed()
+    .setColor("NOT_QUITE_BLACK")
+    .setTitle("Affixes");
 
   if (weekNum) {
     const exact = affixesFromWeek(weekNum);

@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const { logInfo } = require("../api/logs");
 
 const customEmbed = async (code) => {
-  const message = new MessageEmbed().setColor(9066993);
+  const message = new MessageEmbed().setColor("NOT_QUITE_BLACK");
   const log = await logInfo(code);
   const logsUrl = `https://www.warcraftlogs.com/reports/${code}`;
 
