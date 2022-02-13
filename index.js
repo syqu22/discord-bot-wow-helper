@@ -1,6 +1,12 @@
 const fs = require("fs");
 const { Client, Intents, Collection } = require("discord.js");
 const config = require("./config.json");
+const {
+  ToadScheduler,
+  SimpleIntervalJob,
+  AsyncTask,
+} = require("toad-scheduler");
+const { tokenPrice } = require("./api/wow");
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -18,8 +24,17 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
+// Create scheduler with the token task that will run every 30 minutes
+const scheduler = new ToadScheduler();
+const task = new AsyncTask("simple task", async () => {
+  await tokenPrice(), (err) => console.log(err);
+});
+const job = new SimpleIntervalJob({ minutes: 30 }, task);
+
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);
+
+  scheduler.addSimpleIntervalJob(job);
 });
 
 client.on("interactionCreate", async (interaction) => {
