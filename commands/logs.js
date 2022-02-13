@@ -9,10 +9,12 @@ const customEmbed = async (code) => {
 
   message
     .setTitle(
-      `${log.title} - ${new Date(log.duration).toISOString().slice(11, -5)}`
+      `${log.title} | ${new Date(log.duration).toISOString().slice(11, -5)} | ${
+        log?.zone.name
+      }`
     )
     .setURL(logsUrl)
-    .setImage("https://i.imgur.com/X5Kk2JO.jpg");
+    .setImage(log.zone?.image);
 
   log.fights.forEach((fight, index) => {
     message.addField(
@@ -48,7 +50,9 @@ module.exports = {
       await interaction.editReply({ embeds: [embed] });
     } catch {
       await interaction
-        .editReply(`Cannot find Log with code **${code}**`)
+        .editReply(
+          `Cannot find Log with code **${code}**. Make sure the logs are not **Private** and the code is correct.`
+        )
         .then((reply) => setTimeout(() => reply.delete(), 5000));
     }
   },

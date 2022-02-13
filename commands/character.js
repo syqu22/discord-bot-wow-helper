@@ -53,11 +53,11 @@ const customEmbed = async (region, name, realm) => {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("character")
-    .setDescription("Shows information about given character.")
+    .setDescription("Shows information about the given character.")
     .addStringOption((option) => {
       return option
         .setName("region")
-        .setDescription("Select character's region")
+        .setDescription("Select the character's region.")
         .setRequired(true)
         .addChoices([
           ["EU", "eu"],
@@ -69,13 +69,15 @@ module.exports = {
     .addStringOption((option) => {
       return option
         .setName("name")
-        .setDescription("Insert character's name")
+        .setDescription("Insert the character's name.")
         .setRequired(true);
     })
     .addStringOption((option) => {
       return option
         .setName("realm")
-        .setDescription("Insert character's realm")
+        .setDescription(
+          "Pass the character's realm (realms composed of two parts should be separated with a space or '-')."
+        )
         .setRequired(true);
     }),
   async execute(interaction) {
@@ -92,7 +94,7 @@ module.exports = {
     } catch {
       await interaction
         .editReply(
-          `Cannot find Character with name **${name}** on realm **${realm}**`
+          `Cannot find the character with name **${name}** on realm **${realm}**.`
         )
         .then((reply) => setTimeout(() => reply.delete(), 5000));
     }

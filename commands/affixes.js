@@ -7,7 +7,7 @@ const {
   affixesFromWeek,
 } = require("../api/affixes.js");
 
-const customEmbed = async (weekNum) => {
+const customEmbed = async (weekNum = null) => {
   const message = new MessageEmbed()
     .setColor("NOT_QUITE_BLACK")
     .setTitle("Affixes");
@@ -20,7 +20,7 @@ const customEmbed = async (weekNum) => {
     const current = currentAffixes();
     const next = nextAffixes();
 
-    // During first week don't show previous week affixes
+    // During the first week of the season don't show previous week affixes
     if (!previous.error) {
       message.addField(
         `Previous week ${previous.week}:`,
@@ -28,13 +28,18 @@ const customEmbed = async (weekNum) => {
         true
       );
     }
-    message
-      .addField(
-        `Current week ${current.week}:`,
-        current.affixes.join(", "),
-        true
-      )
-      .addField(`Next week ${next.week}:`, next.affixes.join(", "), true);
+    message.addFields(
+      {
+        name: `Current week ${current.week}:`,
+        value: current.affixes.join(", "),
+        inline: true,
+      },
+      {
+        name: `Next week ${next.week}:`,
+        value: next.affixes.join(", "),
+        inline: true,
+      }
+    );
   }
   return message;
 };
@@ -43,12 +48,12 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("affixes")
     .setDescription(
-      "Shows affixes for previous/current/next week. Can also show affixes for the week user wants."
+      "Get a list of affixes for previous, current and next week. Can also show affixes for any given week."
     )
     .addIntegerOption((option) => {
       return option
         .setName("week")
-        .setDescription("The week you want to see affixes for");
+        .setDescription("The week you want to see affixes for.");
     }),
   async execute(interaction) {
     const week = interaction.options.getInteger("week");

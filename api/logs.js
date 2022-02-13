@@ -4,7 +4,7 @@ const config = require("../config.json");
 const API_URL = "https://www.warcraftlogs.com:443/v1/report/";
 const API_KEY = config.warcraftlogs_client;
 
-// Fetch logs JSON data from Warcraftlogs API
+// Fetch the logs JSON data from Warcraftlogs API
 const fetchLogs = async (code) => {
   return await axios
     .get(API_URL + "fights/" + code, {
@@ -17,35 +17,42 @@ const fetchLogs = async (code) => {
       return data;
     })
     .catch((err) => {
-      console.log(err.message);
+      console.error(err.message);
     });
 };
 
-// Change zone id to the appropriate zone name
-const zoneName = (zoneId) => {
+// Change the zone id to the appropriate zone name
+const zone = (zoneId) => {
   switch (zoneId) {
     case 25:
-      return "Mythic+";
+      return { name: "Mythic+", image: "https://i.imgur.com/VT7yTYl.jpg" };
     case 26:
-      return "Castle Nathria";
+      return {
+        name: "Castle Nathria",
+        image: "https://i.imgur.com/cssCW3A.jpg",
+      };
     case 27:
-      return "Torghast";
+      return { name: "Torghast", image: "https://i.imgur.com/a3Kzwws.jpg" };
     case 28:
-      return "Sanctum of Domination";
+      return {
+        name: "Sanctum of Domination",
+        image: "https://i.imgur.com/X5Kk2JO.jpg",
+      };
     case 29:
-      return "Sepulcher of the First Ones";
-    case 30:
-      return "Future raid...";
+      return {
+        name: "Sepulcher of the First Ones",
+        image: "https://i.imgur.com/knJecHj.png",
+      };
     default:
       break;
   }
 };
 
-// Parse data of a single fight
+// Parse the fight's data and return list with each of the fights
 const fightDetail = (fights) => {
   const parsedFights = [];
 
-  // Change fight difficulty id to the appropriate difficulty name
+  // Change the fight difficulty ID to an appropriate name
   const fightDifficulty = (difficulty) => {
     switch (difficulty) {
       case 20:
@@ -61,14 +68,14 @@ const fightDetail = (fights) => {
       case 1:
         return "LFR";
       default:
-        break;
+        return "Unknown Difficulty";
     }
   };
 
-  // Change boss health depending on his health percentage
+  // Change the boss health depending on his health percentage
   const bossHealth = (kill, bossPercentage) => {
     if (kill) {
-      return "Defeated";
+      return "Defeated!";
     } else {
       return `${bossPercentage / 100}%`;
     }
@@ -85,7 +92,7 @@ const fightDetail = (fights) => {
       bossPercentage,
       kill,
     }) => {
-      // Skip trash
+      // Skip trash fights
       if (boss) {
         parsedFights.push({
           boss: boss,
@@ -110,6 +117,6 @@ exports.logInfo = async (code) => {
     title: logs.title,
     fights: fights,
     duration: Math.abs(logs.start - logs.end),
-    zone: zoneName(logs.zone),
+    zone: zone(logs.zone),
   };
 };

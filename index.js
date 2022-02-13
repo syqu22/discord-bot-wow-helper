@@ -27,9 +27,9 @@ for (const file of commandFiles) {
 // Create scheduler with the token task that will run every 30 minutes
 const scheduler = new ToadScheduler();
 const task = new AsyncTask("simple task", async () => {
-  await tokenPrice(), (err) => console.log(err);
+  await tokenPrice(), (err) => console.error(err);
 });
-const job = new SimpleIntervalJob({ minutes: 30 }, task);
+const job = new SimpleIntervalJob({ minutes: 30, runImmediately: true }, task);
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);

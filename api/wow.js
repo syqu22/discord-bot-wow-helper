@@ -2,27 +2,24 @@ const fs = require("fs");
 const axios = require("axios");
 const config = require("../config.json");
 
-// Set global variables for Blizzard API
 const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
-// Create axios instance to retrieve access token from LocalStorage
-const connection = axios.create();
-
 // Create axios interceptor that on Authorization will refresh the access token
+const connection = axios.create();
 connection.interceptors.response.use(
   (res) => {
     return res;
   },
   async (err) => {
-    // If current token is expired/wrong remove it from headers
+    // Important! If current token is expired/wrong remove it from headers
     if (err.response.data.error === "invalid_token") {
       delete connection.defaults.headers["Authorization"];
       delete err.response.config.headers["Authorization"];
     }
 
-    // On authorization error when no token is set
+    // On authorization error, retrieve an access token from Blizzard API
     if (err.response.status === 401) {
       return connection
         .post(
@@ -51,7 +48,7 @@ connection.interceptors.response.use(
   }
 );
 
-// Fetch wow token price from all regions and save it to a JSON file
+// Fetch wow token price from set regions and save it as a JSON file
 exports.tokenPrice = async () => {
   const regions = ["eu", "us", "kr", "tw"];
   const tokens = { regions: {}, last_update: 0 };
@@ -67,9 +64,9 @@ exports.tokenPrice = async () => {
       .finally(() => {
         tokens.last_update = new Date().getTime();
       })
-      .catch((err) => Promise.reject(err));
+      .catch((err) => console.error(err.message));
   }
-  // Save token data as JSON file
+
   await fs.promises.writeFile(
     "data/wowtoken-data.json",
     JSON.stringify(tokens),
@@ -79,8 +76,8 @@ exports.tokenPrice = async () => {
   );
 };
 
-// Fetch character's profile avatar and return an url of it
-// ex. https://render.worldofwarcraft.com/eu/character/xxx/xxx/xxx-inset.jpg
+// Fetch character profile avatar's URL
+// example URL: https://render.worldofwarcraft.com/eu/character/xxx/xxx/xxx-inset.jpg
 const characterAvatar = async (region, realmSlug, characterName) => {
   return await connection
     .get(
@@ -89,11 +86,14 @@ const characterAvatar = async (region, realmSlug, characterName) => {
     .then(({ data }) => {
       return data.assets[1].value;
     })
-    .catch((err) => Promise.reject(err));
+    .catch((err) => console.error(err.message));
 };
 
 // Destructure character's profile data
-const character = async (data, info) => {
+const character = async (
+  characterData,
+  { region, realmSlug, characterName }
+) => {
   const {
     name,
     realm,
@@ -107,7 +107,7 @@ const character = async (data, info) => {
     average_item_level,
     equipped_item_level,
     achievement_points,
-  } = data;
+  } = characterData;
 
   return {
     name: name,
@@ -127,11 +127,7 @@ const character = async (data, info) => {
       eq: equipped_item_level,
     },
     achiev_points: achievement_points,
-    image: await characterAvatar(
-      info.region,
-      info.realmSlug,
-      info.characterName
-    ),
+    image: await characterAvatar(region, realmSlug, characterName),
   };
 };
 
@@ -148,5 +144,5 @@ exports.characterInfo = async (region, realmSlug, characterName) => {
         characterName,
       });
     })
-    .catch((err) => Promise.reject(err));
+    .catch((err) => console.error(err.message));
 };

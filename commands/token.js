@@ -15,7 +15,7 @@ const readTokenData = async () => {
 const customEmbed = async () => {
   const message = new MessageEmbed()
     .setColor("NOT_QUITE_BLACK")
-    .setTitle("Gold Tokens");
+    .setTitle("WoW Tokens");
   const tokenPrices = await readTokenData();
   let index = 1;
 
@@ -25,7 +25,7 @@ const customEmbed = async () => {
       `**${Number(tokenPrices.regions[region]).toLocaleString()}** Gold`,
       true
     );
-    // Add empty field to make embed only have 2 rows
+    // Add an empty field to make embed message only have 2 rows
     if (index === 2) message.addField("\u200b", "\u200b");
     index = index + 1;
   }
@@ -41,7 +41,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("token")
     .setDescription(
-      "Shows current price of the WoW token, data is taken from EU, US, KR and TW regions."
+      "Shows the current price of the WoW token, data is taken from EU, US, KR and TW regions."
     ),
   async execute(interaction) {
     const embed = await customEmbed();
