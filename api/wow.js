@@ -1,23 +1,14 @@
 const fs = require("fs");
 const axios = require("axios");
 const config = require("../config.json");
-const { LocalStorage } = require("node-localstorage");
 
 // Set global variables for Blizzard API
 const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
-// Create LocalStorage instance for access token
-const localStorage = new LocalStorage("./");
 
 // Create axios instance to retrieve access token from LocalStorage
-const connection = axios.create({
-  headers: {
-    Authorization: localStorage.getItem("access_token")
-      ? `Bearer ${localStorage.getItem("access_token")}`
-      : null,
-  },
-});
+const connection = axios.create();
 
 // Create axios interceptor that on Authorization will refresh the access token
 connection.interceptors.response.use(
@@ -46,7 +37,6 @@ connection.interceptors.response.use(
           }
         )
         .then(({ data }) => {
-          localStorage.setItem("access_token", data.access_token);
           connection.defaults.headers[
             "Authorization"
           ] = `Bearer ${data.access_token}`;
@@ -80,11 +70,13 @@ exports.tokenPrice = async () => {
       .catch((err) => Promise.reject(err));
   }
   // Save token data as JSON file
-  await fs.promises
-    .writeFile("data/wowtoken-data.json", JSON.stringify(tokens), (err) => {
+  await fs.promises.writeFile(
+    "data/wowtoken-data.json",
+    JSON.stringify(tokens),
+    (err) => {
       if (err) throw err;
-    })
-    .then(console.log("Token prices successfully saved."));
+    }
+  );
 };
 
 // Fetch character's profile avatar and return an url of it
