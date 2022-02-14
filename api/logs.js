@@ -17,7 +17,7 @@ const fetchLogs = async (code) => {
       return data;
     })
     .catch((err) => {
-      console.error(err.message);
+      console.error(err.response.data);
     });
 };
 
@@ -84,6 +84,7 @@ const fightDetail = (fights) => {
   // Do the destructuring for each fight
   fights.forEach(
     ({
+      id,
       boss,
       name,
       difficulty,
@@ -95,6 +96,7 @@ const fightDetail = (fights) => {
       // Skip trash fights
       if (boss) {
         parsedFights.push({
+          id: id,
           boss: boss,
           name: name,
           difficulty: fightDifficulty(difficulty),

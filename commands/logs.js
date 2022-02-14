@@ -2,10 +2,11 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { logsInfo } = require("../api/logs");
 
-const customEmbed = async (code) => {
+const fightsPerPage = 15;
+
+const customEmbed = (logs, code, page) => {
   const message = new MessageEmbed().setColor("NOT_QUITE_BLACK");
   const logsUrl = `https://www.warcraftlogs.com/reports/${code}`;
-  const logs = await logsInfo(code);
 
   message
     .setTitle(
@@ -16,9 +17,16 @@ const customEmbed = async (code) => {
     .setURL(logsUrl)
     .setImage(logs.zone?.image);
 
-  logs.fights.forEach((fight, index) => {
+  const fights = logs.fights.slice(
+    page * fightsPerPage,
+    page * fightsPerPage + fightsPerPage
+  );
+
+  fights.forEach((fight, index) => {
     message.addField(
-      `${index + 1}. ${fight.name} (${fight.difficulty})`,
+      `${index + page * fightsPerPage + 1}. ${fight.name} (${
+        fight.difficulty
+      })`,
       `[Link](${logsUrl}#fight=${fight.id}) | ${new Date(fight.duration)
         .toISOString()
         .slice(14, -5)} | ${fight.bossPercentage}`,
@@ -26,16 +34,26 @@ const customEmbed = async (code) => {
     );
   });
 
+  // Improve embed message spacing with odd amount of elements
+  if (fights.length % 3 === 2) {
+    message.addField("\u200b", "\u200b", true);
+  }
+  if (fights.length % 3 === 1) {
+    message.addField("\u200b", "\u200b", true);
+    message.addField("\u200b", "\u200b", true);
+  }
+
   return message;
 };
 
-const paginationRow = (page) => {
+const paginationRow = () => {
   const row = new MessageActionRow().addComponents(
     new MessageButton()
       .setCustomId("primary")
       .setLabel("Previous")
       .setStyle("PRIMARY")
-      .setCustomId("previous"),
+      .setCustomId("previous")
+      .setDisabled(true),
     new MessageButton()
       .setCustomId("primary")
       .setLabel("Next")
@@ -44,22 +62,6 @@ const paginationRow = (page) => {
   );
 
   return row;
-};
-
-const handleButtons = (interaction) => {
-  const filter = (i) => i.user.id === interaction.user.id;
-  const collector = interaction.channel.createMessageComponentCollector({
-    filter,
-    time: 15000,
-  });
-
-  collector.on("collect", async (i) => {
-    await i.update("");
-  });
-
-  collector.on("end", async (i) => {
-    await i.update("");
-  });
 };
 
 module.exports = {
@@ -71,18 +73,62 @@ module.exports = {
     .addStringOption((option) => {
       return option
         .setName("code")
-        .setDescription("Code from WarcraftLogs")
+        .setDescription("Code from WarcraftLogs report.")
         .setRequired(true);
     }),
   async execute(interaction) {
     const code = interaction.options.getString("code");
-    const row = paginationRow(0);
+    const row = paginationRow();
+    let page = 0;
 
     await interaction.deferReply();
     try {
-      const embed = await customEmbed(code);
-      await interaction.editReply({ embeds: [embed], components: [row] });
-      handleButtons(interaction);
+      // Create embed with buttons row
+      const logs = await logsInfo(code);
+      await interaction.editReply({
+        embeds: [customEmbed(logs, code, page)],
+        components: logs.fights.length > 15 ? [row] : [], // Don't use pagination with less than 15 fights
+      });
+
+      // Handle buttons
+      const filter = (i) => i.user.id === interaction.user.id;
+      const collector = interaction.channel.createMessageComponentCollector({
+        filter,
+        time: 150000,
+      });
+
+      collector.on("collect", async (i) => {
+        const maxPages = Math.round(logs.fights.length / fightsPerPage);
+
+        // Pagination logic
+        const updatePagination = () => {
+          page > 0
+            ? row.components[0].setDisabled(false)
+            : row.components[0].setDisabled(true);
+          page === maxPages
+            ? row.components[1].setDisabled(true)
+            : row.components[1].setDisabled(false);
+        };
+
+        if (i.customId === "next") {
+          page = page + 1;
+          updatePagination();
+
+          await i.update({
+            embeds: [customEmbed(logs, code, page)],
+            components: [row],
+          });
+        }
+        if (i.customId === "previous") {
+          page = page - 1;
+          updatePagination();
+
+          await i.update({
+            embeds: [customEmbed(logs, code, page)],
+            components: [row],
+          });
+        }
+      });
     } catch {
       await interaction
         .editReply(

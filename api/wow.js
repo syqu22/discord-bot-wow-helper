@@ -64,7 +64,7 @@ exports.tokenPrice = async () => {
       .finally(() => {
         tokens.last_update = new Date().getTime();
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => console.error(err.response.data));
   }
 
   await fs.promises.writeFile(
@@ -86,7 +86,7 @@ const characterAvatar = async (region, realmSlug, characterName) => {
     .then(({ data }) => {
       return data.assets[1].value;
     })
-    .catch((err) => console.error(err.message));
+    .catch((err) => console.error(err.response.data));
 };
 
 // Destructure character's profile data
@@ -144,5 +144,5 @@ exports.characterInfo = async (region, realmSlug, characterName) => {
         characterName,
       });
     })
-    .catch((err) => console.error(err.message));
+    .catch((err) => console.error(err.response.data));
 };

@@ -29,7 +29,7 @@ const scheduler = new ToadScheduler();
 const task = new AsyncTask("simple task", async () => {
   await tokenPrice(), (err) => console.error(err);
 });
-const job = new SimpleIntervalJob({ minutes: 30, runImmediately: true }, task);
+const job = new SimpleIntervalJob({ minutes: 30 }, task);
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);

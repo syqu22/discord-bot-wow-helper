@@ -12,6 +12,7 @@ test("logsInfo should return promise with correct logs data", () => {
     expect(typeof data.fights).toBe("object");
 
     // Remnant of Ner'zhul
+    expect(data.fights[3].id).toBe(9);
     expect(data.fights[3].boss).toBe(2432);
     expect(data.fights[3].name).toBe("Remnant of Ner'zhul");
     expect(data.fights[3].duration).toBe(219901);
@@ -19,6 +20,7 @@ test("logsInfo should return promise with correct logs data", () => {
     expect(data.fights[3].bossPercentage).toBe("Defeated!");
 
     // Guardian of the First Ones
+    expect(data.fights[6].id).toBe(14);
     expect(data.fights[6].boss).toBe(2436);
     expect(data.fights[6].name).toBe("Guardian of the First Ones");
     expect(data.fights[6].duration).toBe(256847);
