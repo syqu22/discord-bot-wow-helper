@@ -109,7 +109,7 @@ const fightDetail = (fights) => {
 };
 
 // Return an object with all parsed data
-exports.logInfo = async (code) => {
+exports.logsInfo = async (code) => {
   const logs = await fetchLogs(code);
   const fights = fightDetail(logs.fights);
 

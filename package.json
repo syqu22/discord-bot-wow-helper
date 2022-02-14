@@ -1,7 +1,8 @@
 {
   "name": "discord-bot-wow-helper",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Discord bot",
+  "private": "true",
   "main": "index.js",
   "scripts": {
     "start": "node . ",
@@ -16,9 +17,11 @@
   "jest": {
     "testEnvironment": "node"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "bot"
+  ],
+  "author": "Syqu",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/syqu22/discord-bot-wow-helper-js/issues"
   },

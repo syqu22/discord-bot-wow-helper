@@ -26,7 +26,7 @@ const customEmbed = async () => {
       true
     );
     // Add an empty field to make embed message only have 2 rows
-    if (index === 2) message.addField("\u200b", "\u200b");
+    if (index === 2 || index == 4) message.addField("\u200b", "\u200b", true);
     index = index + 1;
   }
 

@@ -4,10 +4,11 @@
 
 ## Commands
 
-- /log
-- /character
-- /affixes
-- /token
+- logs
+- character
+- affixes
+- token
+- help
 
 ## Screenshots
 
