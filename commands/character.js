@@ -1,14 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const { characterInfo } = require("../api/wow");
 
-const customEmbed = async (region, name, realm) => {
+const customEmbed = (character) => {
   const message = new MessageEmbed().setColor("NOT_QUITE_BLACK");
-  const character = await characterInfo(region, realm, name);
-  const armoryUrl = `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}`;
-
-  name = name.toLowerCase();
-  realm = realm.toLowerCase().replace(" ", "-");
 
   message
     .setTitle(
@@ -16,38 +11,74 @@ const customEmbed = async (region, name, realm) => {
         character.guild ? `<${character.guild}>` : ""
       }`
     )
-    .setURL(armoryUrl)
     .setImage(character.image)
     .addFields(
       {
-        name: "Spec",
-        value: `${character.race} ${character.spec} ${character.class}`,
+        name: "Race",
+        value: character.race,
+        inline: true,
+      },
+      {
+        name: "Class",
+        value: character.class,
+        inline: true,
+      },
+      {
+        name: "Specialization",
+        value: character.spec,
         inline: true,
       },
       { name: "Faction", value: `${character.faction}`, inline: true },
       {
-        name: "Item level",
-        value: `(${character.ilvl.avg}) ${character.ilvl.eq}`,
-        inline: true,
-      },
-      {
-        name: "Links",
-        value: `[Raider.IO](https://raider.io/characters/${region}/${realm}/${name}) | [WarcraftLogs](https://www.warcraftlogs.com/character/${region}/${realm}/${name}) | [WoWProgress](https://www.wowprogress.com/character/${region}/${realm}/${name})`,
+        name: "Item Level",
+        value: `**(${character.ilvl.avg})** ${character.ilvl.eq}`,
         inline: true,
       },
       {
         name: "Covenant",
-        value: `${character.covenant.name} (${character.covenant.renown})`,
+        value: `${character.covenant.name} **(${character.covenant.renown})**`,
         inline: true,
       },
       {
-        name: "Achievements",
-        value: `[${character.achiev_points}](${armoryUrl + "/achievements"})`,
+        name: "Achievement points",
+        value: `${character.achiev_points}`,
         inline: true,
       }
     );
 
   return message;
+};
+
+const linksRows = (region, realm, name) => {
+  const row = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setLabel("Raider.IO")
+      .setStyle("LINK")
+      .setURL(`https://raider.io/characters/${region}/${realm}/${name}`),
+    new MessageButton()
+      .setLabel("WarcraftLogs")
+      .setStyle("LINK")
+      .setURL(
+        `https://www.warcraftlogs.com/character/${region}/${realm}/${name}`
+      )
+  );
+
+  const row2 = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setLabel("WowProgress")
+      .setStyle("LINK")
+      .setURL(
+        `https://www.wowprogress.com/character/${region}/${realm}/${name}`
+      ),
+    new MessageButton()
+      .setLabel("Armory")
+      .setStyle("LINK")
+      .setURL(
+        `https://worldofwarcraft.com/en-gb/character/${region}/${realm}/${name}`
+      )
+  );
+
+  return [row, row2];
 };
 
 module.exports = {
@@ -76,20 +107,25 @@ module.exports = {
       return option
         .setName("realm")
         .setDescription(
-          "Pass the character's realm (realms composed of two parts should be separated with a space or '-')."
+          "Pass the character's realm, realms composed of two parts should be separated with a space or '-'."
         )
         .setRequired(true);
     }),
   async execute(interaction) {
     const region = interaction.options.getString("region");
-    const name = interaction.options.getString("name");
-    const realm = interaction.options.getString("realm");
+    const name = interaction.options.getString("name").trim().toLowerCase();
+    const realm = interaction.options
+      .getString("realm")
+      .trim()
+      .toLowerCase()
+      .replace(" ", "-");
 
     await interaction.deferReply();
     try {
-      const embed = await customEmbed(region, name, realm);
+      const character = await characterInfo(region, realm, name);
       await interaction.editReply({
-        embeds: [embed],
+        embeds: [customEmbed(character)],
+        components: linksRows(region, realm, name),
       });
     } catch {
       await interaction

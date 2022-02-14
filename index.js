@@ -32,6 +32,7 @@ const task = new AsyncTask("simple task", async () => {
 const job = new SimpleIntervalJob({ minutes: 30 }, task);
 
 client.once("ready", () => {
+  client.user.setActivity("/logs", { type: "WATCHING" });
   console.log(`Logged in as ${client.user.tag}`);
 
   scheduler.addSimpleIntervalJob(job);

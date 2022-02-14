@@ -13,13 +13,13 @@ connection.interceptors.response.use(
     return res;
   },
   async (err) => {
-    // Important! If current token is expired/wrong remove it from headers
+    // Important! If current token is expired/wrong remove it from the headers
     if (err.response.data.error === "invalid_token") {
       delete connection.defaults.headers["Authorization"];
       delete err.response.config.headers["Authorization"];
     }
 
-    // On authorization error, retrieve an access token from Blizzard API
+    // On authorization error, retrieve an access token from the Blizzard API
     if (err.response.status === 401) {
       return connection
         .post(
