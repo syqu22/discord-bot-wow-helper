@@ -106,9 +106,7 @@ module.exports = {
     .addStringOption((option) => {
       return option
         .setName("realm")
-        .setDescription(
-          "Pass the character's realm, realms composed of two parts should be separated with a space or '-'."
-        )
+        .setDescription("Insert the character's realm.")
         .setRequired(true);
     }),
   async execute(interaction) {

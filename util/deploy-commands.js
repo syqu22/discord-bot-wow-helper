@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-const config = require("./config.json");
+const config = require("../config.json");
 
 const commands = [];
 // Read commands from "/commands" folder
@@ -9,14 +9,14 @@ const commandFiles = fs
   .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
 
+const clientId = config.client;
 // For testing
 // TODO
-const clientId = config.client;
 const guildId = "842688263445282817";
 
 // Load commands data
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const command = require(`../commands/${file}`);
   commands.push(command.data.toJSON());
 }
 

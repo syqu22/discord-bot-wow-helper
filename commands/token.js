@@ -7,8 +7,8 @@ const readTokenData = async () => {
     .readFile("data/wowtoken-data.json", (err) => {
       if (err) throw err;
     })
-    .then((data) => {
-      return JSON.parse(data);
+    .then((tokens) => {
+      return JSON.parse(tokens);
     });
 };
 
