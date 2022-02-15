@@ -1,6 +1,6 @@
 {
-  "token": "",
-  "client": "",
+  "discord_token": "",
+  "discord_client": "",
   "blizzard_client": "",
   "blizzard_secret": "",
   "warcraftlogs_client": ""

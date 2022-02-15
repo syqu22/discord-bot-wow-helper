@@ -56,7 +56,7 @@ const customEmbed = (character) => {
   return message;
 };
 
-const linksRows = (region, realm, name) => {
+const linkRows = (region, realm, name) => {
   const row = new MessageActionRow().addComponents(
     new MessageButton()
       .setLabel("Raider.IO")
@@ -98,10 +98,10 @@ module.exports = {
         .setDescription("Select the character's region.")
         .setRequired(true)
         .addChoices([
-          ["EU", "eu"],
-          ["NA", "us"],
-          ["KR", "kr"],
-          ["TW", "tw"],
+          ["Europe", "eu"],
+          ["North America", "us"],
+          ["Korea", "kr"],
+          ["Taiwan", "tw"],
         ]);
     })
     .addStringOption((option) => {
@@ -129,9 +129,9 @@ module.exports = {
       let re = new RegExp(`^${realm}`, "i");
       const search = realmsList[region]
         .filter((e) => e.name.match(re))
-        .splice(0, 25);
+        .slice(0, 25);
 
-      // Do regex search for realm name
+      // Do regex search for a realm name
       interaction.respond(
         search.map((e) => {
           return { name: e.name, value: e.slug };
@@ -144,7 +144,7 @@ module.exports = {
         const character = await characterInfo(region, realm, name);
         await interaction.editReply({
           embeds: [customEmbed(character)],
-          components: linksRows(region, realm, name),
+          components: linkRows(region, realm, name),
         });
       } catch {
         await interaction

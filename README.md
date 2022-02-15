@@ -6,6 +6,8 @@
 
 Discord bot written in JS and built using [discord.js](https://discord.js.org/) based on [old project](https://github.com/syqu22/discord-bot-wow-helper).
 
+## Invite
+
 ## Technology
 
 - `discord.js` for much easier interaction with Discord API
@@ -14,7 +16,7 @@ Discord bot written in JS and built using [discord.js](https://discord.js.org/) 
 - `jest` for testing
 - `eslint` for linting
 
-## Command
+## Commands
 
 - `/logs` - to view logs information
 - `/character`- to view character information

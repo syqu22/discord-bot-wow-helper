@@ -9,6 +9,7 @@ const BLIZZARD_SECRET = config.blizzard_secret;
 const realms = { eu: [], us: [], kr: [], tw: [] };
 
 (async () => {
+  // Retrieve Blizzard API's access token
   try {
     console.log("Updating realms data...");
     await axios
@@ -23,6 +24,7 @@ const realms = { eu: [], us: [], kr: [], tw: [] };
           },
         }
       )
+      // Using the token fetch realms data info
       .then(async ({ data }) => {
         for (const region in realms) {
           await axios
@@ -40,6 +42,7 @@ const realms = { eu: [], us: [], kr: [], tw: [] };
             });
         }
       })
+      // Save the data into a JSON file
       .then(async () => {
         await fs.promises.writeFile(
           "data/realms-data.json",

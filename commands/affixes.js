@@ -10,7 +10,7 @@ const {
 const customEmbed = async (weekNum = null) => {
   const message = new MessageEmbed()
     .setColor("NOT_QUITE_BLACK")
-    .setTitle("Affixes");
+    .setTitle("Mythic+ affixes");
 
   if (weekNum) {
     const exact = affixesFromWeek(weekNum);
@@ -53,7 +53,7 @@ module.exports = {
     .addIntegerOption((option) => {
       return option
         .setName("week")
-        .setDescription("The week you want to see affixes for.");
+        .setDescription("Wweek you want to see the affixes for.");
     }),
   async execute(interaction) {
     const week = interaction.options.getInteger("week");

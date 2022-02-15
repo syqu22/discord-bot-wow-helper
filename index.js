@@ -55,4 +55,4 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.login(config.token);
+client.login(config.discord_token);

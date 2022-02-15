@@ -15,24 +15,24 @@ const readTokenData = async () => {
 const customEmbed = async () => {
   const message = new MessageEmbed()
     .setColor("NOT_QUITE_BLACK")
-    .setTitle("WoW Tokens");
+    .setTitle("WoW token prices");
+
   const tokenPrices = await readTokenData();
-  let index = 1;
+  let index = 0;
 
   for (const region in tokenPrices.regions) {
+    index = index + 1;
     message.addField(
       region.toUpperCase(),
       `**${Number(tokenPrices.regions[region]).toLocaleString()}** Gold`,
       true
     );
-    // Add an empty field to make embed message only have 2 rows
+    // Add an empty fields to make embed message only have 2 rows
     if (index === 2 || index == 4) message.addField("\u200b", "\u200b", true);
-    index = index + 1;
   }
-
-  message.setFooter({
-    text: `Last update on ${new Date(tokenPrices.last_update).toUTCString()}`,
-  });
+  message
+    .setFooter({ text: "Last time updated on" })
+    .setTimestamp(new Date(tokenPrices.last_update));
 
   return message;
 };
@@ -44,7 +44,6 @@ module.exports = {
       "Shows the current price of the WoW token, data is taken from EU, US, KR and TW regions."
     ),
   async execute(interaction) {
-    const embed = await customEmbed();
-    await interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [await customEmbed()] });
   },
 };
