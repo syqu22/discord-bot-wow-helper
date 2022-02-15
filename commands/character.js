@@ -1,6 +1,13 @@
+const fs = require("fs");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const { characterInfo } = require("../api/wow");
+
+const getRealmsList = () => {
+  return JSON.parse(fs.readFileSync("data/realms-data.json"));
+};
+
+const realmsList = getRealmsList();
 
 const customEmbed = (character) => {
   const message = new MessageEmbed().setColor("NOT_QUITE_BLACK");
@@ -107,30 +114,45 @@ module.exports = {
       return option
         .setName("realm")
         .setDescription("Insert the character's realm.")
+        .setAutocomplete(true)
         .setRequired(true);
     }),
   async execute(interaction) {
     const region = interaction.options.getString("region");
-    const name = interaction.options.getString("name").trim().toLowerCase();
-    const realm = interaction.options
-      .getString("realm")
-      .trim()
-      .toLowerCase()
-      .replace(" ", "-");
+    const name = interaction.options.getString("name")
+      ? interaction.options.getString("name").trim().toLowerCase()
+      : undefined;
+    const realm = interaction.options.getString("realm");
 
-    await interaction.deferReply();
-    try {
-      const character = await characterInfo(region, realm, name);
-      await interaction.editReply({
-        embeds: [customEmbed(character)],
-        components: linksRows(region, realm, name),
-      });
-    } catch {
-      await interaction
-        .editReply(
-          `Cannot find the character with name **${name}** on realm **${realm}**.`
-        )
-        .then((reply) => setTimeout(() => reply.delete(), 5000));
+    // Handle autocomplete interaction
+    if (interaction.type === "APPLICATION_COMMAND_AUTOCOMPLETE") {
+      let re = new RegExp(`^${realm}`, "i");
+      const search = realmsList[region]
+        .filter((e) => e.name.match(re))
+        .splice(0, 25);
+
+      // Do regex search for realm name
+      interaction.respond(
+        search.map((e) => {
+          return { name: e.name, value: e.slug };
+        })
+      );
+    } else {
+      // Handle command interaction
+      await interaction.deferReply();
+      try {
+        const character = await characterInfo(region, realm, name);
+        await interaction.editReply({
+          embeds: [customEmbed(character)],
+          components: linksRows(region, realm, name),
+        });
+      } catch {
+        await interaction
+          .editReply(
+            `Cannot find the character with name **${name}** on realm **${realm}**.`
+          )
+          .then((reply) => setTimeout(() => reply.delete(), 5000));
+      }
     }
   },
 };

@@ -6,8 +6,7 @@ const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
 const BLIZZARD_CLIENT = config.blizzard_client;
 const BLIZZARD_SECRET = config.blizzard_secret;
 
-const regions = ["eu", "us", "kr", "tw"];
-const realms = [];
+const realms = { eu: [], us: [], kr: [], tw: [] };
 
 (async () => {
   try {
@@ -25,7 +24,7 @@ const realms = [];
         }
       )
       .then(async ({ data }) => {
-        for (const region of regions) {
+        for (const region in realms) {
           await axios
             .get(
               `https://${region}.api.blizzard.com/data/wow/realm/index?namespace=dynamic-${region}`,
@@ -33,7 +32,10 @@ const realms = [];
             )
             .then(({ data }) => {
               data.realms.forEach((realm) => {
-                realms.push({ name: realm.name.en_GB, slug: realm.slug });
+                realms[region].push({
+                  name: realm.name.en_GB,
+                  slug: realm.slug,
+                });
               });
             });
         }
