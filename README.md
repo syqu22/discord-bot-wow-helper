@@ -38,7 +38,7 @@ If you want to download and launch the bot locally you need to
     git clone https://github.com/syqu22/discord-bot-wow-helper.git
     ```
 
-2. Rename the `config.sample.json` to `config.json`, then fill it     with all the needed keys. `discord_token` and `discord_client` are both needed to start the bot. `blizzard_client` and `blizzard_client` are necessary to connect with blizzard api and `warcraftlogs_client` is for warcraft logs api access.
+2. Rename the `.env.sample` to `.env`, then fill it     with all the needed keys. `discord_token` and `discord_client` are both needed to start the bot. `blizzard_client` and `blizzard_client` are necessary to connect with blizzard api and `warcraftlogs_client` is for warcraft logs api access.
 
 3. Download all the needed packages:
 

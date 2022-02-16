@@ -1,6 +1,6 @@
 const fs = require("fs");
+require("dotenv").config();
 const { Client, Intents, Collection } = require("discord.js");
-const config = require("./config.json");
 const {
   ToadScheduler,
   SimpleIntervalJob,
@@ -55,4 +55,4 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.login(config.discord_token);
+client.login(process.env.DICSORD_TOKEN);

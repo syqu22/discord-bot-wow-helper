@@ -1,15 +1,13 @@
 const axios = require("axios");
-const config = require("../config.json");
 
 const API_URL = "https://www.warcraftlogs.com:443/v1/report/";
-const API_KEY = config.warcraftlogs_client;
 
 // Fetch the logs JSON data from Warcraftlogs API
 const fetchLogs = async (code) => {
   return await axios
     .get(API_URL + "fights/" + code, {
       params: {
-        api_key: API_KEY,
+        api_key: process.env.WARCRAFTLOGS_CLIENT,
         translate: "True",
       },
     })
