@@ -7,7 +7,7 @@ const ISSUES_URL =
 const CONTACT_DISCORD = "Syqu#2458";
 const CONTACT_EMAIL = "aleklejawa@gmail.com";
 const IMAGE_URL =
-  "https://raw.githubusercontent.com/syqu22/discord-bot-wow-helper-js/main/img/avatar.png";
+  "https://raw.githubusercontent.com/syqu22/discord-bot-wow-helper/main/img/avatar.png";
 
 const customEmbed = () => {
   const message = new MessageEmbed()

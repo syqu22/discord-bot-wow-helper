@@ -5,7 +5,7 @@
   "private": "true",
   "main": "index.js",
   "scripts": {
-    "start": "node . ",
+    "start": "npm run commands && npm run commands && node . ",
     "commands": "node util/deploy-commands.js",
     "realms": "node util/realms.js",
     "test": "node node_modules/jest/bin/jest.js",

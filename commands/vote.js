@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 const VOTE_URL = "https://top.gg/bot/842687783523844149/vote";
 const IMAGE_URL =
-  "https://raw.githubusercontent.com/syqu22/discord-bot-wow-helper-js/main/img/avatar.png";
+  "https://raw.githubusercontent.com/syqu22/discord-bot-wow-helper/main/img/avatar.png";
 
 const customEmbed = () => {
   const message = new MessageEmbed().setColor("NOT_QUITE_BLACK");

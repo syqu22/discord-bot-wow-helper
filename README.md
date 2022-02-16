@@ -46,17 +46,7 @@ If you want to download and launch the bot locally you need to
     npm install
     ```
 
-4. Update the realms and commands data:
-
-    ```sh
-    npm run realms
-    ```
-
-    ```sh
-    npm run commands
-    ```
-
-5. Run the bot:
+4. Run the bot:
 
     ```sh
     npm start
