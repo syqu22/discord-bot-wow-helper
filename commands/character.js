@@ -38,12 +38,12 @@ const customEmbed = (character) => {
       { name: "Faction", value: `${character.faction}`, inline: true },
       {
         name: "Item Level",
-        value: `**(${character.ilvl.avg})** ${character.ilvl.eq}`,
+        value: `(${character.ilvl.avg}) ${character.ilvl.eq}`,
         inline: true,
       },
       {
         name: "Covenant",
-        value: `${character.covenant.name} **(${character.covenant.renown})**`,
+        value: `${character.covenant.name} (${character.covenant.renown})`,
         inline: true,
       },
       {

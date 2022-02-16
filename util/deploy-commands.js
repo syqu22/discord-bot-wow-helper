@@ -9,8 +9,6 @@ const commandFiles = fs
   .filter((file) => file.endsWith(".js"));
 
 const clientId = config.discord_client;
-// TODO remove guild for release
-const guildId = "842688263445282817";
 
 for (const file of commandFiles) {
   const command = require(`../commands/${file}`);
@@ -23,8 +21,7 @@ const rest = new REST({ version: "9" }).setToken(config.discord_token);
   try {
     console.log("Updating commands...");
     await rest
-      // TODO Change to applicationCommands for release
-      .put(Routes.applicationGuildCommands(clientId, guildId), {
+      .put(Routes.applicationCommands(clientId), {
         body: commands,
       })
       .then(() => console.log("Commands successfully updated."));

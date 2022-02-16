@@ -40,9 +40,7 @@ const customEmbed = async () => {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("token")
-    .setDescription(
-      "Shows the current price of the WoW token, data is taken from EU, US, KR and TW regions."
-    ),
+    .setDescription("Shows the current price of the WoW token."),
   async execute(interaction) {
     await interaction.reply({ embeds: [await customEmbed()] });
   },

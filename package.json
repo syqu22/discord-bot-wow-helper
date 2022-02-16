@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/syqu22/discord-bot-wow-helper-js.git"
+    "url": "git+https://github.com/syqu22/discord-bot-wow-helper.git"
   },
   "jest": {
     "testEnvironment": "node"
@@ -24,9 +24,9 @@
   "author": "Syqu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/syqu22/discord-bot-wow-helper-js/issues"
+    "url": "https://github.com/syqu22/discord-bot-wow-helper/issues"
   },
-  "homepage": "https://github.com/syqu22/discord-bot-wow-helper-js#readme",
+  "homepage": "https://github.com/syqu22/discord-bot-wow-helper#readme",
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",

@@ -16,7 +16,7 @@ const customEmbed = () => {
 
   message
     .setDescription(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+      "Nice to see you here! This bot was created some time ago, now it got updated for new discord slash commands. Everything got much cleaner and took a bit more work. Feel free to contact me regarding anything about it."
     )
     .setThumbnail(IMAGE_URL);
 
