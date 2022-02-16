@@ -26,7 +26,7 @@ const customEmbed = () => {
     {
       name: inlineCode("/affixes"),
       value:
-        "Shows a list of affixes from current, previous and the incoming week with addition to showing the number of week.\n\nParameters:\n(_optional_) **week** - the exact week you wan to know affixes for.",
+        "Shows a list of affixes from current, previous and the incoming week with addition to showing the number of week.\n\nParameters:\n(_optional_) **week** - the exact week you want to know affixes for.",
     },
     {
       name: inlineCode("/about"),
