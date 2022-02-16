@@ -28,6 +28,34 @@ Discord bot written in JS, built using [discord.js](https://discord.js.org/) bas
 
 ## Screenshots
 
+`/logs`
+
+![Logs](/img/logs.png)
+
+`/character`
+
+![Character](/img/character.png)
+
+`/token`
+
+![Token](/img/token.png)
+
+`/affixes`
+
+![Affixes](/img/affixes.png)
+
+`/about`
+
+![About](/img/about.png)
+
+`/help`
+
+![Help](/img/help.png)
+
+`/vote`
+
+![Vote](/img/vote.png)
+
 ## Installation
 
 If you want to download and launch the bot locally you need to

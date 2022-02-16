@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 
-const GITHUB_URL = "https://github.com/syqu22/discord-bot-wow-helper-js";
+const GITHUB_URL = "https://github.com/syqu22/discord-bot-wow-helper";
 const ISSUES_URL =
-  "https://github.com/syqu22/discord-bot-wow-helper-js/issues/new";
+  "https://github.com/syqu22/discord-bot-wow-helper/issues/new";
 const CONTACT_DISCORD = "Syqu#2458";
 const CONTACT_EMAIL = "aleklejawa@gmail.com";
 const IMAGE_URL =
