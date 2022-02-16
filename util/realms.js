@@ -1,11 +1,8 @@
 const fs = require("fs");
 require("dotenv").config();
 const axios = require("axios");
-const config = require("../config.json");
 
 const BLIZZARD_URL = "https://eu.battle.net/oauth/token";
-const BLIZZARD_CLIENT = config.blizzard_client;
-const BLIZZARD_SECRET = config.blizzard_secret;
 
 const realms = { eu: [], us: [], kr: [], tw: [] };
 
@@ -20,8 +17,8 @@ const realms = { eu: [], us: [], kr: [], tw: [] };
         {
           params: {
             grant_type: "client_credentials",
-            client_id: BLIZZARD_CLIENT,
-            client_secret: BLIZZARD_SECRET,
+            client_id: process.env.BLIZZARD_CLIENT,
+            client_secret: process.env.BLIZZARD_SECRET,
           },
         }
       )
