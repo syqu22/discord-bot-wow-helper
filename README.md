@@ -83,11 +83,11 @@ If you want to download and launch the bot locally you need to
 You can run tests using:
 
 ```sh
-npm run lint
+npm run test
 ```
 
 and linting:
 
 ```sh
-npm run test
+npm run lint
 ```
