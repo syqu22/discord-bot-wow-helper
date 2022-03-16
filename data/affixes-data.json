@@ -2,16 +2,16 @@
   "first_week": "9:00 3-02-2022",
   "affixes": [
     ["Tyrannical", "Bolstering", "Explosive", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"],
-    ["", "", "", "Encrypted"]
+    ["Fortified", "Bursting", "Storming", "Encrypted"],
+    ["Tyrannical", "Raging", "Volcanic", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"],
+    ["Unknown", "Unknown", "Unknown", "Encrypted"]
   ]
 }
