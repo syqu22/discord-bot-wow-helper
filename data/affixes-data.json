@@ -10,8 +10,8 @@
     ["Tyrannical", "Sanguine", "Storming", "Encrypted"],
     ["Fortified", "Raging", "Explosive", "Encrypted"],
     ["Tyrannical", "Bursting", "Volcanic", "Encrypted"],
-    ["Unknown", "Unknown", "Unknown", "Encrypted"],
-    ["Unknown", "Unknown", "Unknown", "Encrypted"],
-    ["Unknown", "Unknown", "Unknown", "Encrypted"]
+    ["Fortified", "Spiteful", "Necrotic", "Encrypted"],
+    ["Tyrannical", "Unknown", "Unknown", "Encrypted"],
+    ["Fortified", "Unknown", "Unknown", "Encrypted"]
   ]
 }
