@@ -11,7 +11,7 @@
     ["Fortified", "Raging", "Explosive", "Encrypted"],
     ["Tyrannical", "Bursting", "Volcanic", "Encrypted"],
     ["Fortified", "Spiteful", "Necrotic", "Encrypted"],
-    ["Tyrannical", "Unknown", "Unknown", "Encrypted"],
-    ["Fortified", "Unknown", "Unknown", "Encrypted"]
+    ["Tyrannical", "Inspiring", "Quaking", "Encrypted"],
+    ["Fortified", "Sanguine", "Grievous", "Encrypted"]
   ]
 }
