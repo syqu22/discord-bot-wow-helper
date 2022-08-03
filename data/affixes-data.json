@@ -1,17 +1,17 @@
 {
-  "first_week": "9:00 3-02-2022",
+  "first_week": "9:00 8-03-2022",
   "affixes": [
-    ["Tyrannical", "Bolstering", "Explosive", "Encrypted"],
-    ["Fortified", "Bursting", "Storming", "Encrypted"],
-    ["Tyrannical", "Raging", "Volcanic", "Encrypted"],
-    ["Fortified", "Inspiring", "Grievous", "Encrypted"],
-    ["Tyrannical", "Spiteful", "Necrotic", "Encrypted"],
-    ["Fortified", "Bolstering", "Quaking", "Encrypted"],
-    ["Tyrannical", "Sanguine", "Storming", "Encrypted"],
-    ["Fortified", "Raging", "Explosive", "Encrypted"],
-    ["Tyrannical", "Bursting", "Volcanic", "Encrypted"],
-    ["Fortified", "Spiteful", "Necrotic", "Encrypted"],
-    ["Tyrannical", "Inspiring", "Quaking", "Encrypted"],
-    ["Fortified", "Sanguine", "Grievous", "Encrypted"]
+    ["Tyrannical", "Inspiring", "Quaking", "Shrouded"],
+    ["Fortified", "Unknown", "Unknown", "Shrouded"],
+    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
+    ["Fortified", "Unknown", "Unknown", "Shrouded"],
+    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
+    ["Fortified", "Unknown", "Unknown", "Shrouded"],
+    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
+    ["Fortified", "Unknown", "Unknown", "Shrouded"],
+    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
+    ["Fortified", "Unknown", "Unknown", "Shrouded"],
+    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
+    ["Fortified", "Unknown", "Unknown", "Shrouded"]
   ]
 }
