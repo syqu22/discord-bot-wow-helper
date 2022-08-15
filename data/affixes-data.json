@@ -3,15 +3,15 @@
   "affixes": [
     ["Tyrannical", "Inspiring", "Quaking", "Shrouded"],
     ["Fortified", "Sanguine", "Grievous", "Shrouded"],
-    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
-    ["Fortified", "Unknown", "Unknown", "Shrouded"],
-    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
-    ["Fortified", "Unknown", "Unknown", "Shrouded"],
-    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
-    ["Fortified", "Unknown", "Unknown", "Shrouded"],
-    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
-    ["Fortified", "Unknown", "Unknown", "Shrouded"],
-    ["Tyrannical", "Unknown", "Unknown", "Shrouded"],
-    ["Fortified", "Unknown", "Unknown", "Shrouded"]
+    ["Tyrannical", "Bolstering", "Explosive", "Shrouded"],
+    ["Fortified", "Bursting", "Storming", "Shrouded"],
+    ["Tyrannical", "Raging", "Volcanic", "Shrouded"],
+    ["Fortified", "Inspiring", "Grievous", "Shrouded"],
+    ["Tyrannical", "Spiteful", "Necrotic", "Shrouded"],
+    ["Fortified", "Bolstering", "Quaking", "Shrouded"],
+    ["Tyrannical", "Sanguine", "Storming", "Shrouded"],
+    ["Fortified", "Raging", "Explosive", "Shrouded"],
+    ["Tyrannical", "Bursting", "Volcanic", "Shrouded"],
+    ["Fortified", "Spiteful", "Necrotic", "Shrouded"]
   ]
 }
