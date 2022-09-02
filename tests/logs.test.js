@@ -1,4 +1,5 @@
 const { logsInfo } = require("../api/logs.js");
+require("dotenv").config();
 
 const LOG_CODE = "6xRmBfCzJ2dLWq9M";
 

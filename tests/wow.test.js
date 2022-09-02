@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { tokenPrice, characterInfo } = require("../api/wow.js");
+require("dotenv").config();
 
 const charMock = {
   region: "eu",
@@ -20,7 +21,7 @@ test("tokenPrice should fetch WoW tokens correctly and save them to data folder"
       expect(tokens.last_update).toBeTruthy();
     });
   });
-}, 20000);
+}, 60000);
 
 test("characterInfo should return correct character data", () => {
   return characterInfo(charMock.region, charMock.realm, charMock.name).then(
