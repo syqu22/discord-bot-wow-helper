@@ -133,7 +133,18 @@ module.exports = {
         .editReply(
           `Cannot find Log with code **${code}**. Make sure the logs are not **Private** and the code is correct.`
         )
-        .then((reply) => setTimeout(() => reply.delete(), 5000));
+        .catch((err) => {
+          console.error(err);
+        })
+        .then((reply) => {
+          if (reply) {
+            setTimeout(() => {
+              reply.delete().catch((err) => {
+                console.error(err);
+              });
+            }, 5000);
+          }
+        });
     }
   },
 };

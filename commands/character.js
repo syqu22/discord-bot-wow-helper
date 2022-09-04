@@ -151,7 +151,18 @@ module.exports = {
           .editReply(
             `Cannot find the character with name **${name}** on realm **${realm}**.`
           )
-          .then((reply) => setTimeout(() => reply.delete(), 5000));
+          .catch((err) => {
+            console.error(err);
+          })
+          .then((reply) => {
+            if (reply) {
+              setTimeout(() => {
+                reply.delete().catch((err) => {
+                  console.error(err);
+                });
+              }, 5000);
+            }
+          });
       }
     }
   },
