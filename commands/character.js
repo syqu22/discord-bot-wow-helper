@@ -127,7 +127,11 @@ module.exports = {
     // Handle autocomplete interaction
     if (interaction.type === "APPLICATION_COMMAND_AUTOCOMPLETE") {
       let re = new RegExp(`^${realm}`, "i");
-      const search = realmsList[region]
+      // Make sure that region is choosed, if not then set EU as a default one
+      let currentRegion = region !== null ? region : "eu";
+
+      // Make sure that region is set, if not then use EU as a default
+      const search = realmsList[currentRegion]
         .filter((e) => e.name.match(re))
         .slice(0, 25);
 
