@@ -6,8 +6,6 @@
 
 Discord bot written in JS, built using [discord.js](https://discord.js.org/) based on [old project](https://github.com/syqu22/discord-bot-wow-helper-old).
 
-## [Invite link](https://discord.com/api/oauth2/authorize?client_id=842687783523844149&permissions=0&scope=bot%20applications.commands)
-
 ## Technology
 
 - `discord.js` for much easier interaction with Discord API
